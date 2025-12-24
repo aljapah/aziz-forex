@@ -6,11 +6,7 @@
     <title>Aziz Forex - مراقب السوق</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Tajawal', sans-serif;
@@ -19,33 +15,146 @@
             color: #fff;
         }
         
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
         
         /* Header */
         .header {
             text-align: center;
-            padding: 30px 0;
+            padding: 25px 0;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
         
         .logo {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 800;
             background: linear-gradient(135deg, #00d4ff, #00ff88);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
         
-        .subtitle {
-            color: #888;
-            margin-top: 5px;
+        .subtitle { color: #888; margin-top: 5px; font-size: 0.85rem; }
+        
+        /* Settings Toggle */
+        .settings-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        /* Settings Panel */
+        .settings-panel {
+            display: none;
+            background: rgba(0,0,0,0.95);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .settings-panel.active { display: block; }
+        
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .settings-title { font-size: 1.5rem; font-weight: 700; }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .setting-group {
+            margin-bottom: 25px;
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        
+        .setting-label {
+            display: block;
+            margin-bottom: 10px;
+            color: #aaa;
             font-size: 0.9rem;
+        }
+        
+        .setting-input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            font-family: monospace;
+        }
+        
+        .setting-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+        }
+        
+        .setting-hint {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 8px;
+        }
+        
+        .ai-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .ai-option {
+            padding: 10px 18px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .ai-option:hover { background: rgba(255,255,255,0.1); }
+        .ai-option.active {
+            background: linear-gradient(135deg, #00d4ff, #00ff88);
+            color: #000;
+            font-weight: 600;
+            border-color: transparent;
+        }
+        
+        .save-settings {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #00d4ff, #00ff88);
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 20px;
         }
         
         /* Status */
@@ -54,36 +163,42 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            padding: 15px;
+            padding: 12px;
             background: rgba(0, 212, 255, 0.1);
-            border-radius: 12px;
-            margin-bottom: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
             border: 1px solid rgba(0, 212, 255, 0.2);
         }
         
         .status-dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background: #00ff88;
             border-radius: 50%;
             animation: pulse 2s infinite;
         }
         
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        
+        .status-text { color: #00ff88; font-weight: 500; font-size: 0.9rem; }
+        
+        /* Warning */
+        .warning {
+            background: rgba(255, 200, 0, 0.1);
+            border: 1px solid rgba(255, 200, 0, 0.3);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #ffc800;
+            font-size: 0.85rem;
         }
         
-        .status-text {
-            color: #00ff88;
-            font-weight: 500;
-        }
-        
-        /* Categories */
+        /* Tabs */
         .section-title {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             color: #888;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -91,27 +206,24 @@
         
         .category-tabs {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 18px;
             overflow-x: auto;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
         
         .tab {
-            padding: 12px 20px;
+            padding: 10px 16px;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
             white-space: nowrap;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
         }
         
-        .tab:hover {
-            background: rgba(255,255,255,0.1);
-        }
-        
+        .tab:hover { background: rgba(255,255,255,0.1); }
         .tab.active {
             background: linear-gradient(135deg, #00d4ff, #00ff88);
             color: #000;
@@ -119,53 +231,41 @@
             border-color: transparent;
         }
         
-        /* Pairs Grid */
+        /* Pairs */
         .pairs-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
         }
         
         .pair-card {
-            padding: 18px;
+            padding: 14px 10px;
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
         }
         
-        .pair-card:hover {
-            background: rgba(255,255,255,0.08);
-            transform: translateY(-2px);
-        }
-        
+        .pair-card:hover { background: rgba(255,255,255,0.08); }
         .pair-card.selected {
             background: rgba(0, 212, 255, 0.15);
             border-color: #00d4ff;
         }
         
-        .pair-name {
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-        }
+        .pair-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; }
+        .pair-label { font-size: 0.7rem; color: #666; }
         
-        .pair-label {
-            font-size: 0.8rem;
-            color: #666;
-        }
-        
-        /* Start Button */
+        /* Button */
         .start-btn {
             width: 100%;
-            padding: 18px;
-            font-size: 1.2rem;
+            padding: 16px;
+            font-size: 1.1rem;
             font-weight: 700;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
             background: linear-gradient(135deg, #00d4ff, #00ff88);
@@ -173,28 +273,19 @@
             margin-bottom: 20px;
         }
         
-        .start-btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
-        }
-        
         .start-btn:disabled {
             background: #333;
             color: #666;
             cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
         }
         
-        .stop-btn {
-            background: linear-gradient(135deg, #ff4444, #ff6b6b);
-        }
+        .stop-btn { background: linear-gradient(135deg, #ff4444, #ff6b6b); }
         
-        /* Signal Card */
+        /* Signal */
         .signal-card {
             display: none;
-            padding: 25px;
-            border-radius: 16px;
+            padding: 20px;
+            border-radius: 14px;
             margin-bottom: 20px;
             animation: slideIn 0.5s ease;
         }
@@ -216,96 +307,87 @@
             border: 2px solid #ff4444;
         }
         
-        .signal-type {
-            font-size: 2rem;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
+        .signal-type { font-size: 1.8rem; font-weight: 800; text-align: center; margin-bottom: 15px; }
         .signal-type.buy { color: #00ff88; }
         .signal-type.sell { color: #ff4444; }
         
-        .signal-pair {
-            text-align: center;
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-            color: #fff;
-        }
+        .signal-pair { text-align: center; font-size: 1.2rem; margin-bottom: 15px; }
         
-        .signal-details {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
+        .signal-details { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         
         .signal-item {
             background: rgba(0,0,0,0.3);
-            padding: 15px;
-            border-radius: 10px;
+            padding: 12px;
+            border-radius: 8px;
             text-align: center;
         }
         
-        .signal-label {
-            font-size: 0.8rem;
-            color: #888;
-            margin-bottom: 5px;
-        }
-        
-        .signal-value {
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
+        .signal-label { font-size: 0.75rem; color: #888; margin-bottom: 4px; }
+        .signal-value { font-size: 1.1rem; font-weight: 700; }
         
         /* Waiting */
         .waiting {
             text-align: center;
-            padding: 40px;
+            padding: 30px;
             color: #666;
         }
         
-        .waiting-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            animation: spin 2s linear infinite;
-        }
+        .waiting-icon { font-size: 2.5rem; margin-bottom: 10px; }
         
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Price Display */
+        /* Price */
         .price-display {
             background: rgba(255,255,255,0.03);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
             text-align: center;
             border: 1px solid rgba(255,255,255,0.08);
         }
         
-        .current-price {
-            font-size: 2rem;
-            font-weight: 800;
-        }
-        
-        .price-label {
-            color: #666;
-            font-size: 0.85rem;
-            margin-top: 5px;
-        }
+        .current-price { font-size: 1.8rem; font-weight: 800; }
+        .price-label { color: #666; font-size: 0.8rem; margin-top: 3px; }
         
         /* Footer */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #444;
-            font-size: 0.8rem;
-        }
+        .footer { text-align: center; padding: 15px; color: #444; font-size: 0.75rem; }
     </style>
 </head>
 <body>
+    <!-- Settings Button -->
+    <button class="settings-btn" onclick="toggleSettings()">⚙️</button>
+    
+    <!-- Settings Panel -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="container">
+            <div class="settings-header">
+                <div class="settings-title">⚙️ الإعدادات</div>
+                <button class="close-btn" onclick="toggleSettings()">✕</button>
+            </div>
+            
+            <div class="setting-group">
+                <label class="setting-label">🤖 اختر الذكاء الاصطناعي</label>
+                <div class="ai-selector">
+                    <div class="ai-option active" data-ai="openai">OpenAI</div>
+                    <div class="ai-option" data-ai="anthropic">Claude</div>
+                    <div class="ai-option" data-ai="google">Gemini</div>
+                </div>
+            </div>
+            
+            <div class="setting-group">
+                <label class="setting-label">🔑 مفتاح API</label>
+                <input type="password" class="setting-input" id="apiKeyInput" placeholder="sk-...">
+                <div class="setting-hint">مفتاحك يُحفظ في جهازك فقط ولا يُرسل لنا</div>
+            </div>
+            
+            <div class="setting-group">
+                <label class="setting-label">🔔 قناة الإشعارات (Ntfy)</label>
+                <input type="text" class="setting-input" id="ntfyChannel" placeholder="my-forex-alerts">
+                <div class="setting-hint">اشترك في نفس القناة في تطبيق Ntfy على موبايلك</div>
+            </div>
+            
+            <button class="save-settings" onclick="saveSettings()">💾 حفظ الإعدادات</button>
+        </div>
+    </div>
+    
     <div class="container">
         <!-- Header -->
         <div class="header">
@@ -313,8 +395,13 @@
             <div class="subtitle">مراقب السوق بالذكاء الاصطناعي</div>
         </div>
         
+        <!-- Warning if no API key -->
+        <div class="warning" id="warning" style="display: none;">
+            ⚠️ أضف مفتاح API من الإعدادات لتفعيل المراقبة
+        </div>
+        
         <!-- Status -->
-        <div class="status-bar" id="statusBar">
+        <div class="status-bar">
             <div class="status-dot" id="statusDot"></div>
             <span class="status-text" id="statusText">جاهز للمراقبة</span>
         </div>
@@ -330,20 +417,18 @@
         
         <!-- Pairs -->
         <div class="section-title">💱 اختر الزوج</div>
-        <div class="pairs-grid" id="pairsGrid">
-            <!-- Will be populated by JS -->
-        </div>
+        <div class="pairs-grid" id="pairsGrid"></div>
         
         <!-- Start Button -->
         <button class="start-btn" id="startBtn" disabled>ابدأ المراقبة</button>
         
-        <!-- Price Display -->
+        <!-- Price -->
         <div class="price-display" id="priceDisplay" style="display: none;">
             <div class="current-price" id="currentPrice">--</div>
             <div class="price-label">السعر الحالي</div>
         </div>
         
-        <!-- Signal Card -->
+        <!-- Signal -->
         <div class="signal-card" id="signalCard">
             <div class="signal-type" id="signalType"></div>
             <div class="signal-pair" id="signalPair"></div>
@@ -371,157 +456,201 @@
         <div class="waiting" id="waiting" style="display: none;">
             <div class="waiting-icon">⏳</div>
             <div>يراقب السوق...</div>
-            <div style="margin-top: 10px; font-size: 0.85rem;">الفحص كل دقيقتين</div>
         </div>
         
-        <!-- Footer -->
-        <div class="footer">
-            Aziz Forex © 2024
-        </div>
+        <div class="footer">Aziz Forex © 2024 - BYOK</div>
     </div>
     
     <script>
-        // Data
+        // Data - Extended
         const pairs = {
             crypto: [
                 { symbol: 'BTC-USD', name: 'BTC/USD', label: 'بيتكوين' },
                 { symbol: 'ETH-USD', name: 'ETH/USD', label: 'إيثريوم' },
                 { symbol: 'BNB-USD', name: 'BNB/USD', label: 'باينانس' },
                 { symbol: 'SOL-USD', name: 'SOL/USD', label: 'سولانا' },
+                { symbol: 'XRP-USD', name: 'XRP/USD', label: 'ريبل' },
+                { symbol: 'DOGE-USD', name: 'DOGE/USD', label: 'دوج' },
+                { symbol: 'ADA-USD', name: 'ADA/USD', label: 'كاردانو' },
+                { symbol: 'AVAX-USD', name: 'AVAX/USD', label: 'أفالانش' },
+                { symbol: 'LINK-USD', name: 'LINK/USD', label: 'تشين لينك' },
             ],
             forex: [
                 { symbol: 'EURUSD=X', name: 'EUR/USD', label: 'يورو/دولار' },
                 { symbol: 'GBPUSD=X', name: 'GBP/USD', label: 'باوند/دولار' },
                 { symbol: 'USDJPY=X', name: 'USD/JPY', label: 'دولار/ين' },
                 { symbol: 'AUDUSD=X', name: 'AUD/USD', label: 'استرالي/دولار' },
+                { symbol: 'USDCAD=X', name: 'USD/CAD', label: 'دولار/كندي' },
+                { symbol: 'NZDUSD=X', name: 'NZD/USD', label: 'نيوزلندي/دولار' },
+                { symbol: 'EURGBP=X', name: 'EUR/GBP', label: 'يورو/باوند' },
+                { symbol: 'EURJPY=X', name: 'EUR/JPY', label: 'يورو/ين' },
+                { symbol: 'GBPJPY=X', name: 'GBP/JPY', label: 'باوند/ين' },
             ],
             metals: [
                 { symbol: 'GC=F', name: 'XAU/USD', label: 'الذهب' },
                 { symbol: 'SI=F', name: 'XAG/USD', label: 'الفضة' },
+                { symbol: 'PL=F', name: 'XPT/USD', label: 'البلاتين' },
+                { symbol: 'HG=F', name: 'النحاس', label: 'النحاس' },
             ],
             indices: [
                 { symbol: '^GSPC', name: 'S&P 500', label: 'إس آند بي' },
                 { symbol: '^DJI', name: 'Dow Jones', label: 'داو جونز' },
+                { symbol: '^IXIC', name: 'NASDAQ', label: 'ناسداك' },
+                { symbol: '^GDAXI', name: 'DAX', label: 'داكس' },
+                { symbol: '^FTSE', name: 'FTSE 100', label: 'فوتسي' },
             ]
         };
         
         let selectedPair = null;
+        let selectedAI = 'openai';
         let isMonitoring = false;
         let monitorInterval = null;
         
-        // Elements
-        const pairsGrid = document.getElementById('pairsGrid');
-        const startBtn = document.getElementById('startBtn');
-        const statusText = document.getElementById('statusText');
-        const statusDot = document.getElementById('statusDot');
-        const signalCard = document.getElementById('signalCard');
-        const waiting = document.getElementById('waiting');
-        const priceDisplay = document.getElementById('priceDisplay');
+        // Load settings
+        function loadSettings() {
+            const apiKey = localStorage.getItem('apiKey') || '';
+            const ntfy = localStorage.getItem('ntfyChannel') || '';
+            const ai = localStorage.getItem('selectedAI') || 'openai';
+            
+            document.getElementById('apiKeyInput').value = apiKey;
+            document.getElementById('ntfyChannel').value = ntfy;
+            selectedAI = ai;
+            
+            document.querySelectorAll('.ai-option').forEach(opt => {
+                opt.classList.toggle('active', opt.dataset.ai === ai);
+            });
+            
+            // Show warning if no API key
+            document.getElementById('warning').style.display = apiKey ? 'none' : 'block';
+        }
+        
+        function saveSettings() {
+            const apiKey = document.getElementById('apiKeyInput').value.trim();
+            const ntfy = document.getElementById('ntfyChannel').value.trim();
+            
+            localStorage.setItem('apiKey', apiKey);
+            localStorage.setItem('ntfyChannel', ntfy);
+            localStorage.setItem('selectedAI', selectedAI);
+            
+            document.getElementById('warning').style.display = apiKey ? 'none' : 'block';
+            toggleSettings();
+            
+            alert('تم حفظ الإعدادات ✅');
+        }
+        
+        function toggleSettings() {
+            document.getElementById('settingsPanel').classList.toggle('active');
+        }
+        
+        // AI selector
+        document.querySelectorAll('.ai-option').forEach(opt => {
+            opt.onclick = () => {
+                document.querySelectorAll('.ai-option').forEach(o => o.classList.remove('active'));
+                opt.classList.add('active');
+                selectedAI = opt.dataset.ai;
+            };
+        });
         
         // Render pairs
         function renderPairs(category) {
-            pairsGrid.innerHTML = '';
+            const grid = document.getElementById('pairsGrid');
+            grid.innerHTML = '';
             pairs[category].forEach(pair => {
                 const card = document.createElement('div');
                 card.className = 'pair-card';
-                card.dataset.symbol = pair.symbol;
-                card.innerHTML = `
-                    <div class="pair-name">${pair.name}</div>
-                    <div class="pair-label">${pair.label}</div>
-                `;
+                card.innerHTML = `<div class="pair-name">${pair.name}</div><div class="pair-label">${pair.label}</div>`;
                 card.onclick = () => selectPair(pair, card);
-                pairsGrid.appendChild(card);
+                grid.appendChild(card);
             });
         }
         
-        // Select pair
         function selectPair(pair, card) {
             document.querySelectorAll('.pair-card').forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
             selectedPair = pair;
-            startBtn.disabled = false;
+            document.getElementById('startBtn').disabled = !localStorage.getItem('apiKey');
         }
         
-        // Tab switching
+        // Tabs
         document.querySelectorAll('.tab').forEach(tab => {
             tab.onclick = () => {
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
                 renderPairs(tab.dataset.category);
                 selectedPair = null;
-                startBtn.disabled = true;
+                document.getElementById('startBtn').disabled = true;
             };
         });
         
-        // Start/Stop monitoring
-        startBtn.onclick = () => {
-            if (isMonitoring) {
-                stopMonitoring();
-            } else {
-                startMonitoring();
-            }
+        // Start/Stop
+        document.getElementById('startBtn').onclick = () => {
+            if (isMonitoring) stopMonitoring();
+            else startMonitoring();
         };
         
         function startMonitoring() {
-            if (!selectedPair) return;
+            if (!selectedPair || !localStorage.getItem('apiKey')) return;
             
             isMonitoring = true;
-            startBtn.textContent = 'إيقاف المراقبة';
-            startBtn.classList.add('stop-btn');
-            statusText.textContent = `يراقب ${selectedPair.label}`;
-            statusDot.style.background = '#00ff88';
-            waiting.style.display = 'block';
-            priceDisplay.style.display = 'block';
-            signalCard.className = 'signal-card';
+            const btn = document.getElementById('startBtn');
+            btn.textContent = 'إيقاف المراقبة';
+            btn.classList.add('stop-btn');
             
-            // Start checking
+            document.getElementById('statusText').textContent = `يراقب ${selectedPair.label}`;
+            document.getElementById('waiting').style.display = 'block';
+            document.getElementById('priceDisplay').style.display = 'block';
+            document.getElementById('signalCard').className = 'signal-card';
+            
             checkMarket();
-            monitorInterval = setInterval(checkMarket, 120000); // Every 2 minutes
+            monitorInterval = setInterval(checkMarket, 120000);
         }
         
         function stopMonitoring() {
             isMonitoring = false;
-            startBtn.textContent = 'ابدأ المراقبة';
-            startBtn.classList.remove('stop-btn');
-            statusText.textContent = 'جاهز للمراقبة';
-            waiting.style.display = 'none';
-            priceDisplay.style.display = 'none';
-            signalCard.className = 'signal-card';
+            const btn = document.getElementById('startBtn');
+            btn.textContent = 'ابدأ المراقبة';
+            btn.classList.remove('stop-btn');
             
-            if (monitorInterval) {
-                clearInterval(monitorInterval);
-                monitorInterval = null;
-            }
+            document.getElementById('statusText').textContent = 'جاهز للمراقبة';
+            document.getElementById('waiting').style.display = 'none';
+            document.getElementById('priceDisplay').style.display = 'none';
+            document.getElementById('signalCard').className = 'signal-card';
+            
+            if (monitorInterval) clearInterval(monitorInterval);
         }
         
         async function checkMarket() {
             if (!selectedPair || !isMonitoring) return;
             
-            statusText.textContent = `جاري التحليل...`;
+            document.getElementById('statusText').textContent = 'جاري التحليل...';
             
             try {
-                const response = await fetch(`/api/analyze?symbol=${selectedPair.symbol}&name=${encodeURIComponent(selectedPair.label)}`);
+                const apiKey = localStorage.getItem('apiKey');
+                const ntfy = localStorage.getItem('ntfyChannel');
+                
+                const response = await fetch(`/api/analyze?symbol=${selectedPair.symbol}&name=${encodeURIComponent(selectedPair.label)}&apiKey=${encodeURIComponent(apiKey)}&ai=${selectedAI}&ntfy=${encodeURIComponent(ntfy)}`);
                 const data = await response.json();
                 
                 document.getElementById('currentPrice').textContent = data.price?.toLocaleString() || '--';
-                statusText.textContent = `يراقب ${selectedPair.label}`;
+                document.getElementById('statusText').textContent = `يراقب ${selectedPair.label}`;
                 
-                if (data.signal && data.signal !== '⏳') {
+                if (data.signal && !data.signal.includes('⏳')) {
                     showSignal(data);
                 } else {
-                    signalCard.className = 'signal-card';
+                    document.getElementById('signalCard').className = 'signal-card';
                 }
                 
             } catch (error) {
                 console.error('Error:', error);
-                statusText.textContent = `يراقب ${selectedPair.label}`;
+                document.getElementById('statusText').textContent = `يراقب ${selectedPair.label}`;
             }
         }
         
         function showSignal(data) {
             const isBuy = data.signal.includes('BUY') || data.signal.includes('شراء');
+            const card = document.getElementById('signalCard');
             
-            signalCard.className = `signal-card ${isBuy ? 'buy' : 'sell'}`;
+            card.className = `signal-card ${isBuy ? 'buy' : 'sell'}`;
             document.getElementById('signalType').textContent = isBuy ? '🟢 شراء' : '🔴 بيع';
             document.getElementById('signalType').className = `signal-type ${isBuy ? 'buy' : 'sell'}`;
             document.getElementById('signalPair').textContent = selectedPair.label;
@@ -529,32 +658,11 @@
             document.getElementById('slPrice').textContent = data.sl || '--';
             document.getElementById('tpPrice').textContent = data.tp || '--';
             document.getElementById('lotSize').textContent = data.lot || '0.01';
-            
-            // Play sound
-            playNotificationSound();
-            
-            // Send notification
-            if (Notification.permission === 'granted') {
-                new Notification('Aziz Forex', {
-                    body: `${isBuy ? '🟢 شراء' : '🔴 بيع'} ${selectedPair.label}`,
-                    icon: '/icon.png'
-                });
-            }
         }
         
-        function playNotificationSound() {
-            const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2teleogAAG22rAo=');
-            audio.play().catch(() => {});
-        }
-        
-        // Request notification permission
-        if ('Notification' in window) {
-            Notification.requestPermission();
-        }
-        
-        // Initial render
+        // Init
+        loadSettings();
         renderPairs('crypto');
     </script>
 </body>
 </html>
-
