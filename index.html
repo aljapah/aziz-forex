@@ -15,146 +15,222 @@
             color: #fff;
         }
         
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; }
         
-        /* Header */
         .header {
             text-align: center;
-            padding: 25px 0;
+            padding: 20px 0;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         
         .logo {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 800;
             background: linear-gradient(135deg, #00d4ff, #00ff88);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
-        .subtitle { color: #888; margin-top: 5px; font-size: 0.85rem; }
+        .subtitle { color: #888; margin-top: 5px; font-size: 0.8rem; }
         
-        /* Settings Toggle */
-        .settings-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(255,255,255,0.1);
-            border: none;
-            padding: 10px 15px;
-            border-radius: 10px;
-            color: #fff;
-            cursor: pointer;
-            font-size: 1.2rem;
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 18px;
         }
         
-        /* Settings Panel */
-        .settings-panel {
-            display: none;
-            background: rgba(0,0,0,0.95);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 1000;
-            padding: 20px;
-            overflow-y: auto;
-        }
-        
-        .settings-panel.active { display: block; }
-        
-        .settings-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .settings-title { font-size: 1.5rem; font-weight: 700; }
-        
-        .close-btn {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        
-        .setting-group {
-            margin-bottom: 25px;
-            background: rgba(255,255,255,0.03);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-        
-        .setting-label {
+        .form-label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #aaa;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            font-weight: 500;
         }
         
-        .setting-input {
+        .form-select {
             width: 100%;
             padding: 12px 15px;
-            background: rgba(0,0,0,0.5);
+            background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 8px;
+            border-radius: 10px;
             color: #fff;
-            font-size: 1rem;
-            font-family: monospace;
+            font-size: 0.95rem;
+            font-family: 'Tajawal', sans-serif;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23888' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 15px center;
         }
         
-        .setting-input:focus {
+        .form-select:focus {
             outline: none;
             border-color: #00d4ff;
         }
         
-        .setting-hint {
-            font-size: 0.75rem;
-            color: #666;
-            margin-top: 8px;
+        .form-select option {
+            background: #1a1a2e;
+            color: #fff;
         }
         
-        .ai-selector {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .ai-option {
-            padding: 10px 18px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .ai-option:hover { background: rgba(255,255,255,0.1); }
-        .ai-option.active {
-            background: linear-gradient(135deg, #00d4ff, #00ff88);
-            color: #000;
-            font-weight: 600;
-            border-color: transparent;
-        }
-        
-        .save-settings {
+        .form-input {
             width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #00d4ff, #00ff88);
-            border: none;
+            padding: 12px 15px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
             border-radius: 10px;
-            color: #000;
-            font-weight: 700;
-            font-size: 1.1rem;
+            color: #fff;
+            font-size: 0.95rem;
+            font-family: monospace;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+        }
+        
+        .form-hint {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        /* Multi Select */
+        .multi-select-container {
+            position: relative;
+        }
+        
+        .multi-select-btn {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.95rem;
+            text-align: right;
             cursor: pointer;
-            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .multi-select-btn:focus {
+            outline: none;
+            border-color: #00d4ff;
+        }
+        
+        .multi-select-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #1a1a2e;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            margin-top: 5px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        
+        .multi-select-dropdown.active {
+            display: block;
+        }
+        
+        .multi-select-group {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .multi-select-group:last-child {
+            border-bottom: none;
+        }
+        
+        .multi-select-group-title {
+            padding: 5px 15px;
+            font-size: 0.75rem;
+            color: #00d4ff;
+            font-weight: 600;
+        }
+        
+        .multi-select-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s;
+        }
+        
+        .multi-select-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .multi-select-item.selected {
+            background: rgba(0, 212, 255, 0.15);
+        }
+        
+        .multi-select-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        
+        .multi-select-item.selected .multi-select-checkbox {
+            background: #00d4ff;
+            border-color: #00d4ff;
+            color: #000;
+        }
+        
+        /* Selected Tags */
+        .selected-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        
+        .tag {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .tag-remove {
+            cursor: pointer;
+            opacity: 0.7;
+        }
+        
+        .tag-remove:hover {
+            opacity: 1;
+        }
+        
+        /* Sections */
+        .section {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 15px;
+        }
+        
+        .section-title {
+            font-size: 0.9rem;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-weight: 600;
         }
         
         /* Status */
@@ -166,7 +242,7 @@
             padding: 12px;
             background: rgba(0, 212, 255, 0.1);
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border: 1px solid rgba(0, 212, 255, 0.2);
         }
         
@@ -180,88 +256,12 @@
         
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         
-        .status-text { color: #00ff88; font-weight: 500; font-size: 0.9rem; }
-        
-        /* Warning */
-        .warning {
-            background: rgba(255, 200, 0, 0.1);
-            border: 1px solid rgba(255, 200, 0, 0.3);
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-            color: #ffc800;
-            font-size: 0.85rem;
-        }
-        
-        /* Tabs */
-        .section-title {
-            font-size: 0.95rem;
-            color: #888;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .category-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 18px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-        }
-        
-        .tab {
-            padding: 10px 16px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            white-space: nowrap;
-            font-size: 0.85rem;
-        }
-        
-        .tab:hover { background: rgba(255,255,255,0.1); }
-        .tab.active {
-            background: linear-gradient(135deg, #00d4ff, #00ff88);
-            color: #000;
-            font-weight: 600;
-            border-color: transparent;
-        }
-        
-        /* Pairs */
-        .pairs-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 25px;
-        }
-        
-        .pair-card {
-            padding: 14px 10px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-        }
-        
-        .pair-card:hover { background: rgba(255,255,255,0.08); }
-        .pair-card.selected {
-            background: rgba(0, 212, 255, 0.15);
-            border-color: #00d4ff;
-        }
-        
-        .pair-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; }
-        .pair-label { font-size: 0.7rem; color: #666; }
+        .status-text { color: #00ff88; font-weight: 500; font-size: 0.85rem; }
         
         /* Button */
         .start-btn {
             width: 100%;
-            padding: 16px;
+            padding: 15px;
             font-size: 1.1rem;
             font-weight: 700;
             border: none;
@@ -270,7 +270,7 @@
             transition: all 0.3s;
             background: linear-gradient(135deg, #00d4ff, #00ff88);
             color: #000;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         .start-btn:disabled {
@@ -279,14 +279,16 @@
             cursor: not-allowed;
         }
         
-        .stop-btn { background: linear-gradient(135deg, #ff4444, #ff6b6b); }
+        .stop-btn {
+            background: linear-gradient(135deg, #ff4444, #ff6b6b);
+        }
         
         /* Signal */
         .signal-card {
             display: none;
-            padding: 20px;
-            border-radius: 14px;
-            margin-bottom: 20px;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 15px;
             animation: slideIn 0.5s ease;
         }
         
@@ -307,97 +309,58 @@
             border: 2px solid #ff4444;
         }
         
-        .signal-type { font-size: 1.8rem; font-weight: 800; text-align: center; margin-bottom: 15px; }
+        .signal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .signal-type { font-size: 1.3rem; font-weight: 800; }
         .signal-type.buy { color: #00ff88; }
         .signal-type.sell { color: #ff4444; }
         
-        .signal-pair { text-align: center; font-size: 1.2rem; margin-bottom: 15px; }
+        .signal-pair { font-size: 1rem; color: #fff; }
         
-        .signal-details { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .signal-details { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
         
         .signal-item {
             background: rgba(0,0,0,0.3);
-            padding: 12px;
+            padding: 10px 8px;
             border-radius: 8px;
             text-align: center;
         }
         
-        .signal-label { font-size: 0.75rem; color: #888; margin-bottom: 4px; }
-        .signal-value { font-size: 1.1rem; font-weight: 700; }
+        .signal-label { font-size: 0.65rem; color: #888; margin-bottom: 3px; }
+        .signal-value { font-size: 0.9rem; font-weight: 700; }
         
         /* Waiting */
         .waiting {
             text-align: center;
-            padding: 30px;
+            padding: 25px;
             color: #666;
+            display: none;
         }
         
-        .waiting-icon { font-size: 2.5rem; margin-bottom: 10px; }
+        .waiting.active { display: block; }
         
-        /* Price */
-        .price-display {
-            background: rgba(255,255,255,0.03);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-        
-        .current-price { font-size: 1.8rem; font-weight: 800; }
-        .price-label { color: #666; font-size: 0.8rem; margin-top: 3px; }
+        .waiting-icon { font-size: 2rem; margin-bottom: 8px; }
         
         /* Footer */
-        .footer { text-align: center; padding: 15px; color: #444; font-size: 0.75rem; }
+        .footer { text-align: center; padding: 15px; color: #444; font-size: 0.7rem; }
+        
+        /* Responsive */
+        @media (max-width: 400px) {
+            .signal-details { grid-template-columns: repeat(2, 1fr); }
+        }
     </style>
 </head>
 <body>
-    <!-- Settings Button -->
-    <button class="settings-btn" onclick="toggleSettings()">⚙️</button>
-    
-    <!-- Settings Panel -->
-    <div class="settings-panel" id="settingsPanel">
-        <div class="container">
-            <div class="settings-header">
-                <div class="settings-title">⚙️ الإعدادات</div>
-                <button class="close-btn" onclick="toggleSettings()">✕</button>
-            </div>
-            
-            <div class="setting-group">
-                <label class="setting-label">🤖 اختر الذكاء الاصطناعي</label>
-                <div class="ai-selector">
-                    <div class="ai-option active" data-ai="openai">OpenAI</div>
-                    <div class="ai-option" data-ai="anthropic">Claude</div>
-                    <div class="ai-option" data-ai="google">Gemini</div>
-                </div>
-            </div>
-            
-            <div class="setting-group">
-                <label class="setting-label">🔑 مفتاح API</label>
-                <input type="password" class="setting-input" id="apiKeyInput" placeholder="sk-...">
-                <div class="setting-hint">مفتاحك يُحفظ في جهازك فقط ولا يُرسل لنا</div>
-            </div>
-            
-            <div class="setting-group">
-                <label class="setting-label">🔔 قناة الإشعارات (Ntfy)</label>
-                <input type="text" class="setting-input" id="ntfyChannel" placeholder="my-forex-alerts">
-                <div class="setting-hint">اشترك في نفس القناة في تطبيق Ntfy على موبايلك</div>
-            </div>
-            
-            <button class="save-settings" onclick="saveSettings()">💾 حفظ الإعدادات</button>
-        </div>
-    </div>
-    
     <div class="container">
         <!-- Header -->
         <div class="header">
             <div class="logo">Aziz Forex</div>
-            <div class="subtitle">مراقب السوق بالذكاء الاصطناعي</div>
-        </div>
-        
-        <!-- Warning if no API key -->
-        <div class="warning" id="warning" style="display: none;">
-            ⚠️ أضف مفتاح API من الإعدادات لتفعيل المراقبة
+            <div class="subtitle">مراقب السوق بالذكاء الاصطناعي • BYOK</div>
         </div>
         
         <!-- Status -->
@@ -406,32 +369,126 @@
             <span class="status-text" id="statusText">جاهز للمراقبة</span>
         </div>
         
-        <!-- Categories -->
-        <div class="section-title">📊 اختر الفئة</div>
-        <div class="category-tabs">
-            <div class="tab active" data-category="crypto">العملات الرقمية</div>
-            <div class="tab" data-category="forex">العملات</div>
-            <div class="tab" data-category="metals">المعادن</div>
-            <div class="tab" data-category="indices">المؤشرات</div>
+        <!-- AI Settings -->
+        <div class="section">
+            <div class="section-title">🤖 إعدادات الذكاء</div>
+            
+            <div class="form-group">
+                <label class="form-label">نوع الذكاء</label>
+                <select class="form-select" id="aiType">
+                    <option value="openai">OpenAI (GPT-4)</option>
+                    <option value="anthropic">Anthropic (Claude)</option>
+                    <option value="google">Google (Gemini)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">مفتاح API</label>
+                <input type="password" class="form-input" id="apiKey" placeholder="sk-... أو أدخل مفتاحك">
+                <div class="form-hint">🔒 يُحفظ في جهازك فقط</div>
+            </div>
         </div>
         
-        <!-- Pairs -->
-        <div class="section-title">💱 اختر الزوج</div>
-        <div class="pairs-grid" id="pairsGrid"></div>
+        <!-- Pairs Selection -->
+        <div class="section">
+            <div class="section-title">💱 الأزواج المراقبة</div>
+            
+            <div class="form-group">
+                <label class="form-label">اختر الأزواج (متعدد)</label>
+                <div class="multi-select-container">
+                    <button type="button" class="multi-select-btn" id="pairsBtn" onclick="togglePairsDropdown()">
+                        <span id="pairsBtnText">اختر الأزواج...</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="multi-select-dropdown" id="pairsDropdown">
+                        <!-- Crypto -->
+                        <div class="multi-select-group">
+                            <div class="multi-select-group-title">💰 العملات الرقمية</div>
+                            <div class="multi-select-item" data-symbol="BTC-USD" data-name="BTC/USD" data-label="بيتكوين"><div class="multi-select-checkbox">✓</div><span>BTC/USD - بيتكوين</span></div>
+                            <div class="multi-select-item" data-symbol="ETH-USD" data-name="ETH/USD" data-label="إيثريوم"><div class="multi-select-checkbox">✓</div><span>ETH/USD - إيثريوم</span></div>
+                            <div class="multi-select-item" data-symbol="BNB-USD" data-name="BNB/USD" data-label="باينانس"><div class="multi-select-checkbox">✓</div><span>BNB/USD - باينانس</span></div>
+                            <div class="multi-select-item" data-symbol="SOL-USD" data-name="SOL/USD" data-label="سولانا"><div class="multi-select-checkbox">✓</div><span>SOL/USD - سولانا</span></div>
+                            <div class="multi-select-item" data-symbol="XRP-USD" data-name="XRP/USD" data-label="ريبل"><div class="multi-select-checkbox">✓</div><span>XRP/USD - ريبل</span></div>
+                            <div class="multi-select-item" data-symbol="DOGE-USD" data-name="DOGE/USD" data-label="دوج"><div class="multi-select-checkbox">✓</div><span>DOGE/USD - دوج</span></div>
+                            <div class="multi-select-item" data-symbol="ADA-USD" data-name="ADA/USD" data-label="كاردانو"><div class="multi-select-checkbox">✓</div><span>ADA/USD - كاردانو</span></div>
+                            <div class="multi-select-item" data-symbol="AVAX-USD" data-name="AVAX/USD" data-label="أفالانش"><div class="multi-select-checkbox">✓</div><span>AVAX/USD - أفالانش</span></div>
+                            <div class="multi-select-item" data-symbol="LINK-USD" data-name="LINK/USD" data-label="تشين لينك"><div class="multi-select-checkbox">✓</div><span>LINK/USD - تشين لينك</span></div>
+                            <div class="multi-select-item" data-symbol="DOT-USD" data-name="DOT/USD" data-label="بولكادوت"><div class="multi-select-checkbox">✓</div><span>DOT/USD - بولكادوت</span></div>
+                            <div class="multi-select-item" data-symbol="MATIC-USD" data-name="MATIC/USD" data-label="بوليجون"><div class="multi-select-checkbox">✓</div><span>MATIC/USD - بوليجون</span></div>
+                        </div>
+                        <!-- Forex -->
+                        <div class="multi-select-group">
+                            <div class="multi-select-group-title">💵 العملات</div>
+                            <div class="multi-select-item" data-symbol="EURUSD=X" data-name="EUR/USD" data-label="يورو/دولار"><div class="multi-select-checkbox">✓</div><span>EUR/USD - يورو/دولار</span></div>
+                            <div class="multi-select-item" data-symbol="GBPUSD=X" data-name="GBP/USD" data-label="باوند/دولار"><div class="multi-select-checkbox">✓</div><span>GBP/USD - باوند/دولار</span></div>
+                            <div class="multi-select-item" data-symbol="USDJPY=X" data-name="USD/JPY" data-label="دولار/ين"><div class="multi-select-checkbox">✓</div><span>USD/JPY - دولار/ين</span></div>
+                            <div class="multi-select-item" data-symbol="AUDUSD=X" data-name="AUD/USD" data-label="استرالي/دولار"><div class="multi-select-checkbox">✓</div><span>AUD/USD - استرالي/دولار</span></div>
+                            <div class="multi-select-item" data-symbol="USDCAD=X" data-name="USD/CAD" data-label="دولار/كندي"><div class="multi-select-checkbox">✓</div><span>USD/CAD - دولار/كندي</span></div>
+                            <div class="multi-select-item" data-symbol="NZDUSD=X" data-name="NZD/USD" data-label="نيوزلندي/دولار"><div class="multi-select-checkbox">✓</div><span>NZD/USD - نيوزلندي/دولار</span></div>
+                            <div class="multi-select-item" data-symbol="USDCHF=X" data-name="USD/CHF" data-label="دولار/فرنك"><div class="multi-select-checkbox">✓</div><span>USD/CHF - دولار/فرنك</span></div>
+                            <div class="multi-select-item" data-symbol="EURGBP=X" data-name="EUR/GBP" data-label="يورو/باوند"><div class="multi-select-checkbox">✓</div><span>EUR/GBP - يورو/باوند</span></div>
+                            <div class="multi-select-item" data-symbol="EURJPY=X" data-name="EUR/JPY" data-label="يورو/ين"><div class="multi-select-checkbox">✓</div><span>EUR/JPY - يورو/ين</span></div>
+                            <div class="multi-select-item" data-symbol="GBPJPY=X" data-name="GBP/JPY" data-label="باوند/ين"><div class="multi-select-checkbox">✓</div><span>GBP/JPY - باوند/ين</span></div>
+                        </div>
+                        <!-- Metals -->
+                        <div class="multi-select-group">
+                            <div class="multi-select-group-title">🥇 المعادن</div>
+                            <div class="multi-select-item" data-symbol="GC=F" data-name="XAU/USD" data-label="الذهب"><div class="multi-select-checkbox">✓</div><span>XAU/USD - الذهب</span></div>
+                            <div class="multi-select-item" data-symbol="SI=F" data-name="XAG/USD" data-label="الفضة"><div class="multi-select-checkbox">✓</div><span>XAG/USD - الفضة</span></div>
+                            <div class="multi-select-item" data-symbol="PL=F" data-name="XPT/USD" data-label="البلاتين"><div class="multi-select-checkbox">✓</div><span>XPT/USD - البلاتين</span></div>
+                            <div class="multi-select-item" data-symbol="HG=F" data-name="النحاس" data-label="النحاس"><div class="multi-select-checkbox">✓</div><span>النحاس</span></div>
+                        </div>
+                        <!-- Indices -->
+                        <div class="multi-select-group">
+                            <div class="multi-select-group-title">📊 المؤشرات</div>
+                            <div class="multi-select-item" data-symbol="^GSPC" data-name="S&P 500" data-label="إس آند بي"><div class="multi-select-checkbox">✓</div><span>S&P 500 - إس آند بي</span></div>
+                            <div class="multi-select-item" data-symbol="^DJI" data-name="Dow Jones" data-label="داو جونز"><div class="multi-select-checkbox">✓</div><span>Dow Jones - داو جونز</span></div>
+                            <div class="multi-select-item" data-symbol="^IXIC" data-name="NASDAQ" data-label="ناسداك"><div class="multi-select-checkbox">✓</div><span>NASDAQ - ناسداك</span></div>
+                            <div class="multi-select-item" data-symbol="^GDAXI" data-name="DAX" data-label="داكس"><div class="multi-select-checkbox">✓</div><span>DAX - داكس</span></div>
+                            <div class="multi-select-item" data-symbol="^FTSE" data-name="FTSE 100" data-label="فوتسي"><div class="multi-select-checkbox">✓</div><span>FTSE 100 - فوتسي</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="selected-tags" id="selectedTags"></div>
+            </div>
+        </div>
+        
+        <!-- Strategy -->
+        <div class="section">
+            <div class="section-title">📈 الاستراتيجية</div>
+            
+            <div class="form-group">
+                <label class="form-label">اختر الاستراتيجية</label>
+                <select class="form-select" id="strategy">
+                    <option value="rsi">RSI (ذروة البيع/الشراء)</option>
+                    <option value="trend">Trend Following (تتبع الاتجاه)</option>
+                    <option value="breakout">Breakout (كسر المستويات)</option>
+                    <option value="scalping">Scalping (المضاربة السريعة)</option>
+                    <option value="swing">Swing Trading (التداول المتأرجح)</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Notifications -->
+        <div class="section">
+            <div class="section-title">🔔 الإشعارات</div>
+            
+            <div class="form-group">
+                <label class="form-label">قناة Ntfy</label>
+                <input type="text" class="form-input" id="ntfyChannel" placeholder="my-forex-alerts">
+                <div class="form-hint">حمّل تطبيق Ntfy واشترك في نفس القناة</div>
+            </div>
+        </div>
         
         <!-- Start Button -->
-        <button class="start-btn" id="startBtn" disabled>ابدأ المراقبة</button>
+        <button class="start-btn" id="startBtn" onclick="toggleMonitoring()">ابدأ المراقبة</button>
         
-        <!-- Price -->
-        <div class="price-display" id="priceDisplay" style="display: none;">
-            <div class="current-price" id="currentPrice">--</div>
-            <div class="price-label">السعر الحالي</div>
-        </div>
-        
-        <!-- Signal -->
+        <!-- Signal Card -->
         <div class="signal-card" id="signalCard">
-            <div class="signal-type" id="signalType"></div>
-            <div class="signal-pair" id="signalPair"></div>
+            <div class="signal-header">
+                <span class="signal-type" id="signalType">🟢 شراء</span>
+                <span class="signal-pair" id="signalPair">BTC/USD</span>
+            </div>
             <div class="signal-details">
                 <div class="signal-item">
                     <div class="signal-label">الدخول</div>
@@ -453,152 +510,144 @@
         </div>
         
         <!-- Waiting -->
-        <div class="waiting" id="waiting" style="display: none;">
+        <div class="waiting" id="waiting">
             <div class="waiting-icon">⏳</div>
             <div>يراقب السوق...</div>
         </div>
         
-        <div class="footer">Aziz Forex © 2024 - BYOK</div>
+        <div class="footer">Aziz Forex © 2024</div>
     </div>
     
     <script>
-        // Data - Extended
-        const pairs = {
-            crypto: [
-                { symbol: 'BTC-USD', name: 'BTC/USD', label: 'بيتكوين' },
-                { symbol: 'ETH-USD', name: 'ETH/USD', label: 'إيثريوم' },
-                { symbol: 'BNB-USD', name: 'BNB/USD', label: 'باينانس' },
-                { symbol: 'SOL-USD', name: 'SOL/USD', label: 'سولانا' },
-                { symbol: 'XRP-USD', name: 'XRP/USD', label: 'ريبل' },
-                { symbol: 'DOGE-USD', name: 'DOGE/USD', label: 'دوج' },
-                { symbol: 'ADA-USD', name: 'ADA/USD', label: 'كاردانو' },
-                { symbol: 'AVAX-USD', name: 'AVAX/USD', label: 'أفالانش' },
-                { symbol: 'LINK-USD', name: 'LINK/USD', label: 'تشين لينك' },
-            ],
-            forex: [
-                { symbol: 'EURUSD=X', name: 'EUR/USD', label: 'يورو/دولار' },
-                { symbol: 'GBPUSD=X', name: 'GBP/USD', label: 'باوند/دولار' },
-                { symbol: 'USDJPY=X', name: 'USD/JPY', label: 'دولار/ين' },
-                { symbol: 'AUDUSD=X', name: 'AUD/USD', label: 'استرالي/دولار' },
-                { symbol: 'USDCAD=X', name: 'USD/CAD', label: 'دولار/كندي' },
-                { symbol: 'NZDUSD=X', name: 'NZD/USD', label: 'نيوزلندي/دولار' },
-                { symbol: 'EURGBP=X', name: 'EUR/GBP', label: 'يورو/باوند' },
-                { symbol: 'EURJPY=X', name: 'EUR/JPY', label: 'يورو/ين' },
-                { symbol: 'GBPJPY=X', name: 'GBP/JPY', label: 'باوند/ين' },
-            ],
-            metals: [
-                { symbol: 'GC=F', name: 'XAU/USD', label: 'الذهب' },
-                { symbol: 'SI=F', name: 'XAG/USD', label: 'الفضة' },
-                { symbol: 'PL=F', name: 'XPT/USD', label: 'البلاتين' },
-                { symbol: 'HG=F', name: 'النحاس', label: 'النحاس' },
-            ],
-            indices: [
-                { symbol: '^GSPC', name: 'S&P 500', label: 'إس آند بي' },
-                { symbol: '^DJI', name: 'Dow Jones', label: 'داو جونز' },
-                { symbol: '^IXIC', name: 'NASDAQ', label: 'ناسداك' },
-                { symbol: '^GDAXI', name: 'DAX', label: 'داكس' },
-                { symbol: '^FTSE', name: 'FTSE 100', label: 'فوتسي' },
-            ]
-        };
-        
-        let selectedPair = null;
-        let selectedAI = 'openai';
+        let selectedPairs = [];
         let isMonitoring = false;
         let monitorInterval = null;
         
-        // Load settings
+        // Load saved settings
         function loadSettings() {
-            const apiKey = localStorage.getItem('apiKey') || '';
-            const ntfy = localStorage.getItem('ntfyChannel') || '';
-            const ai = localStorage.getItem('selectedAI') || 'openai';
+            document.getElementById('aiType').value = localStorage.getItem('aiType') || 'openai';
+            document.getElementById('apiKey').value = localStorage.getItem('apiKey') || '';
+            document.getElementById('strategy').value = localStorage.getItem('strategy') || 'rsi';
+            document.getElementById('ntfyChannel').value = localStorage.getItem('ntfyChannel') || '';
             
-            document.getElementById('apiKeyInput').value = apiKey;
-            document.getElementById('ntfyChannel').value = ntfy;
-            selectedAI = ai;
-            
-            document.querySelectorAll('.ai-option').forEach(opt => {
-                opt.classList.toggle('active', opt.dataset.ai === ai);
+            const savedPairs = JSON.parse(localStorage.getItem('selectedPairs') || '[]');
+            savedPairs.forEach(p => {
+                const item = document.querySelector(`.multi-select-item[data-symbol="${p.symbol}"]`);
+                if (item) {
+                    item.classList.add('selected');
+                    selectedPairs.push(p);
+                }
             });
-            
-            // Show warning if no API key
-            document.getElementById('warning').style.display = apiKey ? 'none' : 'block';
+            updateSelectedTags();
+            updateStartButton();
         }
         
+        // Save settings
         function saveSettings() {
-            const apiKey = document.getElementById('apiKeyInput').value.trim();
-            const ntfy = document.getElementById('ntfyChannel').value.trim();
-            
-            localStorage.setItem('apiKey', apiKey);
-            localStorage.setItem('ntfyChannel', ntfy);
-            localStorage.setItem('selectedAI', selectedAI);
-            
-            document.getElementById('warning').style.display = apiKey ? 'none' : 'block';
-            toggleSettings();
-            
-            alert('تم حفظ الإعدادات ✅');
+            localStorage.setItem('aiType', document.getElementById('aiType').value);
+            localStorage.setItem('apiKey', document.getElementById('apiKey').value);
+            localStorage.setItem('strategy', document.getElementById('strategy').value);
+            localStorage.setItem('ntfyChannel', document.getElementById('ntfyChannel').value);
+            localStorage.setItem('selectedPairs', JSON.stringify(selectedPairs));
         }
         
-        function toggleSettings() {
-            document.getElementById('settingsPanel').classList.toggle('active');
+        // Multi-select dropdown
+        function togglePairsDropdown() {
+            document.getElementById('pairsDropdown').classList.toggle('active');
         }
         
-        // AI selector
-        document.querySelectorAll('.ai-option').forEach(opt => {
-            opt.onclick = () => {
-                document.querySelectorAll('.ai-option').forEach(o => o.classList.remove('active'));
-                opt.classList.add('active');
-                selectedAI = opt.dataset.ai;
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.multi-select-container')) {
+                document.getElementById('pairsDropdown').classList.remove('active');
+            }
+        });
+        
+        // Handle pair selection
+        document.querySelectorAll('.multi-select-item').forEach(item => {
+            item.onclick = (e) => {
+                e.stopPropagation();
+                const symbol = item.dataset.symbol;
+                const name = item.dataset.name;
+                const label = item.dataset.label;
+                
+                if (item.classList.contains('selected')) {
+                    item.classList.remove('selected');
+                    selectedPairs = selectedPairs.filter(p => p.symbol !== symbol);
+                } else {
+                    item.classList.add('selected');
+                    selectedPairs.push({ symbol, name, label });
+                }
+                
+                updateSelectedTags();
+                updateStartButton();
+                saveSettings();
             };
         });
         
-        // Render pairs
-        function renderPairs(category) {
-            const grid = document.getElementById('pairsGrid');
-            grid.innerHTML = '';
-            pairs[category].forEach(pair => {
-                const card = document.createElement('div');
-                card.className = 'pair-card';
-                card.innerHTML = `<div class="pair-name">${pair.name}</div><div class="pair-label">${pair.label}</div>`;
-                card.onclick = () => selectPair(pair, card);
-                grid.appendChild(card);
-            });
+        function updateSelectedTags() {
+            const container = document.getElementById('selectedTags');
+            const btn = document.getElementById('pairsBtnText');
+            
+            if (selectedPairs.length === 0) {
+                container.innerHTML = '';
+                btn.textContent = 'اختر الأزواج...';
+                return;
+            }
+            
+            btn.textContent = `${selectedPairs.length} زوج محدد`;
+            
+            container.innerHTML = selectedPairs.map(p => `
+                <div class="tag">
+                    ${p.name}
+                    <span class="tag-remove" onclick="removePair('${p.symbol}')">✕</span>
+                </div>
+            `).join('');
         }
         
-        function selectPair(pair, card) {
-            document.querySelectorAll('.pair-card').forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
-            selectedPair = pair;
-            document.getElementById('startBtn').disabled = !localStorage.getItem('apiKey');
+        function removePair(symbol) {
+            const item = document.querySelector(`.multi-select-item[data-symbol="${symbol}"]`);
+            if (item) item.classList.remove('selected');
+            selectedPairs = selectedPairs.filter(p => p.symbol !== symbol);
+            updateSelectedTags();
+            updateStartButton();
+            saveSettings();
         }
         
-        // Tabs
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.onclick = () => {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                renderPairs(tab.dataset.category);
-                selectedPair = null;
-                document.getElementById('startBtn').disabled = true;
-            };
+        function updateStartButton() {
+            const apiKey = document.getElementById('apiKey').value;
+            document.getElementById('startBtn').disabled = !apiKey || selectedPairs.length === 0;
+        }
+        
+        // Listen to input changes
+        document.getElementById('apiKey').addEventListener('input', () => {
+            updateStartButton();
+            saveSettings();
         });
         
-        // Start/Stop
-        document.getElementById('startBtn').onclick = () => {
-            if (isMonitoring) stopMonitoring();
-            else startMonitoring();
-        };
+        document.getElementById('aiType').addEventListener('change', saveSettings);
+        document.getElementById('strategy').addEventListener('change', saveSettings);
+        document.getElementById('ntfyChannel').addEventListener('input', saveSettings);
+        
+        // Toggle monitoring
+        function toggleMonitoring() {
+            if (isMonitoring) {
+                stopMonitoring();
+            } else {
+                startMonitoring();
+            }
+        }
         
         function startMonitoring() {
-            if (!selectedPair || !localStorage.getItem('apiKey')) return;
+            if (selectedPairs.length === 0 || !document.getElementById('apiKey').value) return;
             
             isMonitoring = true;
             const btn = document.getElementById('startBtn');
             btn.textContent = 'إيقاف المراقبة';
             btn.classList.add('stop-btn');
             
-            document.getElementById('statusText').textContent = `يراقب ${selectedPair.label}`;
-            document.getElementById('waiting').style.display = 'block';
-            document.getElementById('priceDisplay').style.display = 'block';
+            document.getElementById('statusText').textContent = `يراقب ${selectedPairs.length} زوج`;
+            document.getElementById('waiting').classList.add('active');
             document.getElementById('signalCard').className = 'signal-card';
             
             checkMarket();
@@ -612,49 +661,49 @@
             btn.classList.remove('stop-btn');
             
             document.getElementById('statusText').textContent = 'جاهز للمراقبة';
-            document.getElementById('waiting').style.display = 'none';
-            document.getElementById('priceDisplay').style.display = 'none';
+            document.getElementById('waiting').classList.remove('active');
             document.getElementById('signalCard').className = 'signal-card';
             
             if (monitorInterval) clearInterval(monitorInterval);
         }
         
         async function checkMarket() {
-            if (!selectedPair || !isMonitoring) return;
+            if (!isMonitoring) return;
             
             document.getElementById('statusText').textContent = 'جاري التحليل...';
             
-            try {
-                const apiKey = localStorage.getItem('apiKey');
-                const ntfy = localStorage.getItem('ntfyChannel');
-                
-                const response = await fetch(`/api/analyze?symbol=${selectedPair.symbol}&name=${encodeURIComponent(selectedPair.label)}&apiKey=${encodeURIComponent(apiKey)}&ai=${selectedAI}&ntfy=${encodeURIComponent(ntfy)}`);
-                const data = await response.json();
-                
-                document.getElementById('currentPrice').textContent = data.price?.toLocaleString() || '--';
-                document.getElementById('statusText').textContent = `يراقب ${selectedPair.label}`;
-                
-                if (data.signal && !data.signal.includes('⏳')) {
-                    showSignal(data);
-                } else {
-                    document.getElementById('signalCard').className = 'signal-card';
+            const apiKey = document.getElementById('apiKey').value;
+            const aiType = document.getElementById('aiType').value;
+            const strategy = document.getElementById('strategy').value;
+            const ntfy = document.getElementById('ntfyChannel').value;
+            
+            for (const pair of selectedPairs) {
+                try {
+                    const response = await fetch(`/api/analyze?symbol=${encodeURIComponent(pair.symbol)}&name=${encodeURIComponent(pair.label)}&apiKey=${encodeURIComponent(apiKey)}&ai=${aiType}&strategy=${strategy}&ntfy=${encodeURIComponent(ntfy)}`);
+                    const data = await response.json();
+                    
+                    if (data.signal && !data.signal.includes('⏳')) {
+                        showSignal(data, pair);
+                    }
+                    
+                    await new Promise(r => setTimeout(r, 1000)); // Delay between requests
+                } catch (error) {
+                    console.error('Error:', error);
                 }
-                
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('statusText').textContent = `يراقب ${selectedPair.label}`;
             }
+            
+            document.getElementById('statusText').textContent = `يراقب ${selectedPairs.length} زوج`;
         }
         
-        function showSignal(data) {
+        function showSignal(data, pair) {
             const isBuy = data.signal.includes('BUY') || data.signal.includes('شراء');
             const card = document.getElementById('signalCard');
             
             card.className = `signal-card ${isBuy ? 'buy' : 'sell'}`;
             document.getElementById('signalType').textContent = isBuy ? '🟢 شراء' : '🔴 بيع';
             document.getElementById('signalType').className = `signal-type ${isBuy ? 'buy' : 'sell'}`;
-            document.getElementById('signalPair').textContent = selectedPair.label;
-            document.getElementById('entryPrice').textContent = data.entry || data.price;
+            document.getElementById('signalPair').textContent = pair.label;
+            document.getElementById('entryPrice').textContent = data.entry || data.price || '--';
             document.getElementById('slPrice').textContent = data.sl || '--';
             document.getElementById('tpPrice').textContent = data.tp || '--';
             document.getElementById('lotSize').textContent = data.lot || '0.01';
@@ -662,7 +711,6 @@
         
         // Init
         loadSettings();
-        renderPairs('crypto');
     </script>
 </body>
 </html>

@@ -48,15 +48,26 @@ def get_market_data(symbol: str):
         print(f"Market data error: {e}")
         return None
 
-def analyze_openai(api_key: str, symbol_name: str, price: float, trend: str, rsi: float):
+STRATEGY_PROMPTS = {
+    "rsi": "Use RSI strategy: BUY if RSI < 30 (oversold), SELL if RSI > 70 (overbought).",
+    "trend": "Use Trend Following: BUY if uptrend, SELL if downtrend.",
+    "breakout": "Use Breakout strategy: BUY/SELL on significant price movements.",
+    "scalping": "Use Scalping: Quick trades on small movements, tight SL/TP.",
+    "swing": "Use Swing Trading: Hold for days, wider SL/TP based on support/resistance."
+}
+
+def analyze_openai(api_key: str, symbol_name: str, price: float, trend: str, rsi: float, strategy: str = "rsi"):
     """تحليل باستخدام OpenAI"""
     import openai
     
     client = openai.OpenAI(api_key=api_key)
     
+    strategy_hint = STRATEGY_PROMPTS.get(strategy, STRATEGY_PROMPTS["rsi"])
+    
     prompt = f"""Price: {price}, RSI: {rsi}, Trend: {trend}
+Strategy: {strategy_hint}
 
-If opportunity, reply EXACTLY (6 lines):
+If opportunity based on strategy, reply EXACTLY:
 🟢 BUY or 🔴 SELL
 {symbol_name}
 Entry: {price}
@@ -77,15 +88,17 @@ NO TEXT. ONLY 6 LINES OR ⏳"""
     
     return response.choices[0].message.content.strip()
 
-def analyze_anthropic(api_key: str, symbol_name: str, price: float, trend: str, rsi: float):
+def analyze_anthropic(api_key: str, symbol_name: str, price: float, trend: str, rsi: float, strategy: str = "rsi"):
     """تحليل باستخدام Claude"""
     import anthropic
     
     client = anthropic.Anthropic(api_key=api_key)
+    strategy_hint = STRATEGY_PROMPTS.get(strategy, STRATEGY_PROMPTS["rsi"])
     
     prompt = f"""Price: {price}, RSI: {rsi}, Trend: {trend}
+Strategy: {strategy_hint}
 
-If opportunity, reply EXACTLY (6 lines):
+If opportunity based on strategy, reply EXACTLY:
 🟢 BUY or 🔴 SELL
 {symbol_name}
 Entry: {price}
@@ -105,13 +118,15 @@ NO TEXT. ONLY 6 LINES OR ⏳"""
     
     return response.content[0].text.strip()
 
-def analyze_google(api_key: str, symbol_name: str, price: float, trend: str, rsi: float):
+def analyze_google(api_key: str, symbol_name: str, price: float, trend: str, rsi: float, strategy: str = "rsi"):
     """تحليل باستخدام Gemini"""
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={api_key}"
+    strategy_hint = STRATEGY_PROMPTS.get(strategy, STRATEGY_PROMPTS["rsi"])
     
     prompt = f"""Price: {price}, RSI: {rsi}, Trend: {trend}
+Strategy: {strategy_hint}
 
-If opportunity, reply EXACTLY (6 lines):
+If opportunity based on strategy, reply EXACTLY:
 🟢 BUY or 🔴 SELL
 {symbol_name}
 Entry: {price}
@@ -191,6 +206,7 @@ async def analyze_endpoint(
     name: str = Query(...),
     apiKey: str = Query(""),
     ai: str = Query("openai"),
+    strategy: str = Query("rsi"),
     ntfy: str = Query("")
 ):
     """API endpoint للتحليل - BYOK"""
@@ -207,13 +223,13 @@ async def analyze_endpoint(
     # تحليل حسب نوع AI
     try:
         if ai == "openai":
-            signal_text = analyze_openai(apiKey, name, data["price"], data["trend"], data["rsi"])
+            signal_text = analyze_openai(apiKey, name, data["price"], data["trend"], data["rsi"], strategy)
         elif ai == "anthropic":
-            signal_text = analyze_anthropic(apiKey, name, data["price"], data["trend"], data["rsi"])
+            signal_text = analyze_anthropic(apiKey, name, data["price"], data["trend"], data["rsi"], strategy)
         elif ai == "google":
-            signal_text = analyze_google(apiKey, name, data["price"], data["trend"], data["rsi"])
+            signal_text = analyze_google(apiKey, name, data["price"], data["trend"], data["rsi"], strategy)
         else:
-            signal_text = analyze_openai(apiKey, name, data["price"], data["trend"], data["rsi"])
+            signal_text = analyze_openai(apiKey, name, data["price"], data["trend"], data["rsi"], strategy)
     except Exception as e:
         print(f"AI Error: {e}")
         return {"error": str(e), "price": data["price"], "signal": "⏳"}
