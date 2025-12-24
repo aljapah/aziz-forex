@@ -465,7 +465,18 @@
                     <option value="breakout">Breakout (كسر المستويات)</option>
                     <option value="scalping">Scalping (المضاربة السريعة)</option>
                     <option value="swing">Swing Trading (التداول المتأرجح)</option>
+                    <option value="price_action">Price Action (حركة السعر)</option>
+                    <option value="smart_money">Smart Money (السيولة الذكية)</option>
+                    <option value="supply_demand">Supply & Demand (العرض والطلب)</option>
                 </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" style="display: flex; align-items: center; gap: 10px;">
+                    <input type="checkbox" id="useChart" checked style="width: 18px; height: 18px;">
+                    تحليل الشارت بصرياً (Vision)
+                </label>
+                <div class="form-hint">الذكاء يرى صورة الشارت ويحلل كما يفعل المتداول</div>
             </div>
         </div>
         
@@ -676,10 +687,11 @@
             const aiType = document.getElementById('aiType').value;
             const strategy = document.getElementById('strategy').value;
             const ntfy = document.getElementById('ntfyChannel').value;
+            const useChart = document.getElementById('useChart').checked ? 'true' : 'false';
             
             for (const pair of selectedPairs) {
                 try {
-                    const response = await fetch(`/api/analyze?symbol=${encodeURIComponent(pair.symbol)}&name=${encodeURIComponent(pair.label)}&apiKey=${encodeURIComponent(apiKey)}&ai=${aiType}&strategy=${strategy}&ntfy=${encodeURIComponent(ntfy)}`);
+                    const response = await fetch(`/api/analyze?symbol=${encodeURIComponent(pair.symbol)}&name=${encodeURIComponent(pair.label)}&apiKey=${encodeURIComponent(apiKey)}&ai=${aiType}&strategy=${strategy}&ntfy=${encodeURIComponent(ntfy)}&useChart=${useChart}`);
                     const data = await response.json();
                     
                     if (data.signal && !data.signal.includes('⏳')) {

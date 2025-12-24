@@ -49,25 +49,103 @@ def get_market_data(symbol: str):
         return None
 
 STRATEGY_PROMPTS = {
-    "rsi": "Use RSI strategy: BUY if RSI < 30 (oversold), SELL if RSI > 70 (overbought).",
-    "trend": "Use Trend Following: BUY if uptrend, SELL if downtrend.",
-    "breakout": "Use Breakout strategy: BUY/SELL on significant price movements.",
-    "scalping": "Use Scalping: Quick trades on small movements, tight SL/TP.",
-    "swing": "Use Swing Trading: Hold for days, wider SL/TP based on support/resistance."
+    "rsi": "RSI strategy: BUY if oversold (RSI<30), SELL if overbought (RSI>70).",
+    "trend": "Trend Following: BUY in uptrend, SELL in downtrend.",
+    "breakout": "Breakout: BUY/SELL on support/resistance breaks.",
+    "scalping": "Scalping: Quick trades, tight SL/TP (10-20 pips).",
+    "swing": "Swing: Hold days, wider SL/TP based on structure.",
+    "price_action": "Price Action: Analyze candlestick patterns only.",
+    "smart_money": "Smart Money Concepts: Look for order blocks, liquidity sweeps.",
+    "supply_demand": "Supply & Demand: Identify zones and trade reversals."
 }
 
-def analyze_openai(api_key: str, symbol_name: str, price: float, trend: str, rsi: float, strategy: str = "rsi"):
-    """تحليل باستخدام OpenAI"""
+def get_chart_image(symbol: str, interval: str = "1h"):
+    """جلب صورة الشارت من TradingView"""
+    import base64
+    
+    # تحويل الرمز لصيغة TradingView
+    tv_symbol = symbol.replace("-", "").replace("=X", "").replace("^", "")
+    if symbol.endswith("-USD"):
+        tv_symbol = f"BINANCE:{symbol.replace('-USD', 'USDT')}"
+    elif "=X" in symbol:
+        tv_symbol = f"FX:{symbol.replace('=X', '')}"
+    elif symbol.startswith("^"):
+        tv_symbol = f"INDEX:{symbol.replace('^', '')}"
+    elif symbol.endswith("=F"):
+        tv_symbol = f"COMEX:{symbol.replace('=F', '1!')}"
+    else:
+        tv_symbol = symbol
+    
+    # استخدام chart-img.com API (مجاني)
+    chart_url = f"https://api.chart-img.com/v1/tradingview/advanced-chart?symbol={tv_symbol}&interval={interval}&theme=dark&width=800&height=500&key=demo"
+    
+    try:
+        req = urllib.request.Request(chart_url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=15) as response:
+            image_data = response.read()
+            return base64.b64encode(image_data).decode('utf-8')
+    except Exception as e:
+        print(f"Chart image error: {e}")
+        return None
+
+def analyze_openai(api_key: str, symbol_name: str, price: float, trend: str, rsi: float, strategy: str = "rsi", chart_image: str = None):
+    """تحليل باستخدام OpenAI مع صورة الشارت"""
     import openai
     
     client = openai.OpenAI(api_key=api_key)
     
     strategy_hint = STRATEGY_PROMPTS.get(strategy, STRATEGY_PROMPTS["rsi"])
     
-    prompt = f"""Price: {price}, RSI: {rsi}, Trend: {trend}
+    # إذا في صورة، استخدم Vision
+    if chart_image:
+        messages = [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"""أنت محلل فني محترف. حلل هذا الشارت لـ {symbol_name}.
+
+الاستراتيجية: {strategy_hint}
+السعر الحالي: {price}
+RSI: {rsi}
+
+انظر للشارت وحلل:
+- الشموع والأنماط
+- الاتجاه العام
+- مستويات الدعم والمقاومة
+- المؤشرات الظاهرة
+
+إذا وجدت فرصة تداول واضحة، رد بهذا الشكل بالضبط:
+🟢 BUY أو 🔴 SELL
+{symbol_name}
+Entry: السعر
+SL: سعر وقف الخسارة
+TP: سعر أخذ الربح
+Lot: 0.01
+
+إذا لا توجد فرصة واضحة: ⏳
+
+بدون أي شرح إضافي. فقط 6 أسطر أو ⏳"""
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/png;base64,{chart_image}"
+                        }
+                    }
+                ]
+            }
+        ]
+    else:
+        # بدون صورة - تحليل بالأرقام فقط
+        messages = [
+            {
+                "role": "user",
+                "content": f"""Price: {price}, RSI: {rsi}, Trend: {trend}
 Strategy: {strategy_hint}
 
-If opportunity based on strategy, reply EXACTLY:
+If opportunity, reply EXACTLY:
 🟢 BUY or 🔴 SELL
 {symbol_name}
 Entry: {price}
@@ -78,42 +156,54 @@ Lot: 0.01
 If no opportunity: ⏳
 
 NO TEXT. ONLY 6 LINES OR ⏳"""
-
+            }
+        ]
+    
     response = client.chat.completions.create(
         model="gpt-4o",
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=50,
+        messages=messages,
+        max_tokens=100,
         temperature=0.0
     )
     
     return response.choices[0].message.content.strip()
 
-def analyze_anthropic(api_key: str, symbol_name: str, price: float, trend: str, rsi: float, strategy: str = "rsi"):
-    """تحليل باستخدام Claude"""
+def analyze_anthropic(api_key: str, symbol_name: str, price: float, trend: str, rsi: float, strategy: str = "rsi", chart_image: str = None):
+    """تحليل باستخدام Claude مع صورة الشارت"""
     import anthropic
     
     client = anthropic.Anthropic(api_key=api_key)
     strategy_hint = STRATEGY_PROMPTS.get(strategy, STRATEGY_PROMPTS["rsi"])
     
-    prompt = f"""Price: {price}, RSI: {rsi}, Trend: {trend}
-Strategy: {strategy_hint}
+    prompt_text = f"""أنت محلل فني محترف. حلل {symbol_name}.
 
-If opportunity based on strategy, reply EXACTLY:
-🟢 BUY or 🔴 SELL
+الاستراتيجية: {strategy_hint}
+السعر: {price}, RSI: {rsi}
+
+إذا وجدت فرصة، رد بالضبط:
+🟢 BUY أو 🔴 SELL
 {symbol_name}
-Entry: {price}
-SL: number
-TP: number
+Entry: السعر
+SL: وقف الخسارة
+TP: أخذ الربح
 Lot: 0.01
 
-If no opportunity: ⏳
+إذا لا فرصة: ⏳
 
-NO TEXT. ONLY 6 LINES OR ⏳"""
+بدون شرح. 6 أسطر أو ⏳"""
 
+    if chart_image:
+        content = [
+            {"type": "text", "text": prompt_text},
+            {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": chart_image}}
+        ]
+    else:
+        content = prompt_text
+    
     response = client.messages.create(
-        model="claude-3-5-sonnet-20241022",
-        max_tokens=50,
-        messages=[{"role": "user", "content": prompt}]
+        model="claude-sonnet-4-20250514",
+        max_tokens=100,
+        messages=[{"role": "user", "content": content}]
     )
     
     return response.content[0].text.strip()
@@ -207,9 +297,10 @@ async def analyze_endpoint(
     apiKey: str = Query(""),
     ai: str = Query("openai"),
     strategy: str = Query("rsi"),
-    ntfy: str = Query("")
+    ntfy: str = Query(""),
+    useChart: str = Query("true")
 ):
-    """API endpoint للتحليل - BYOK"""
+    """API endpoint للتحليل - BYOK مع صورة الشارت"""
     
     if not apiKey:
         return {"error": "No API key provided", "price": None, "signal": "⏳"}
@@ -220,16 +311,26 @@ async def analyze_endpoint(
     if not data:
         return {"error": "Failed to fetch data", "price": None, "signal": "⏳"}
     
+    # جلب صورة الشارت
+    chart_image = None
+    if useChart == "true":
+        print(f"Fetching chart for {symbol}...")
+        chart_image = get_chart_image(symbol)
+        if chart_image:
+            print(f"Chart image received ({len(chart_image)} bytes)")
+        else:
+            print("Chart image failed, using data only")
+    
     # تحليل حسب نوع AI
     try:
         if ai == "openai":
-            signal_text = analyze_openai(apiKey, name, data["price"], data["trend"], data["rsi"], strategy)
+            signal_text = analyze_openai(apiKey, name, data["price"], data["trend"], data["rsi"], strategy, chart_image)
         elif ai == "anthropic":
-            signal_text = analyze_anthropic(apiKey, name, data["price"], data["trend"], data["rsi"], strategy)
+            signal_text = analyze_anthropic(apiKey, name, data["price"], data["trend"], data["rsi"], strategy, chart_image)
         elif ai == "google":
             signal_text = analyze_google(apiKey, name, data["price"], data["trend"], data["rsi"], strategy)
         else:
-            signal_text = analyze_openai(apiKey, name, data["price"], data["trend"], data["rsi"], strategy)
+            signal_text = analyze_openai(apiKey, name, data["price"], data["trend"], data["rsi"], strategy, chart_image)
     except Exception as e:
         print(f"AI Error: {e}")
         return {"error": str(e), "price": data["price"], "signal": "⏳"}
