@@ -459,6 +459,87 @@
         
         .footer { text-align: center; padding: 10px; color: #333; font-size: 0.65rem; }
         
+        /* Data Sources */
+        .data-sources {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 15px;
+        }
+        
+        .data-sources-title {
+            font-size: 0.7rem;
+            color: #666;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .data-sources-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        
+        .data-source {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,0,0,0.2);
+            padding: 8px 10px;
+            border-radius: 8px;
+        }
+        
+        .data-source-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+        
+        .data-source-icon.yahoo {
+            background: linear-gradient(135deg, #6001d2, #410093);
+        }
+        
+        .data-source-icon.tv {
+            background: linear-gradient(135deg, #2962ff, #1e88e5);
+        }
+        
+        .data-source-icon.ai {
+            background: linear-gradient(135deg, #00d4ff, #00ff88);
+        }
+        
+        .data-source-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .data-source-name {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .data-source-desc {
+            font-size: 0.6rem;
+            color: #666;
+        }
+        
+        .data-disclaimer {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.6rem;
+            color: #444;
+            padding: 8px;
+            background: rgba(255, 200, 0, 0.05);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 200, 0, 0.1);
+        }
+        
         /* Total Selected Badge */
         .total-selected {
             text-align: center;
@@ -670,6 +751,42 @@
         <div class="waiting" id="waiting">
             <div class="waiting-icon">⏳</div>
             <div data-ar="يراقب السوق..." data-en="Monitoring market..."></div>
+        </div>
+        
+        <!-- Data Sources -->
+        <div class="data-sources">
+            <div class="data-sources-title" data-ar="📡 مصادر البيانات" data-en="📡 Data Sources"></div>
+            <div class="data-sources-grid">
+                <div class="data-source">
+                    <div class="data-source-icon yahoo">Y!</div>
+                    <div class="data-source-info">
+                        <div class="data-source-name">Yahoo Finance</div>
+                        <div class="data-source-desc" data-ar="الأسعار الحية" data-en="Live Prices"></div>
+                    </div>
+                </div>
+                <div class="data-source">
+                    <div class="data-source-icon tv">📈</div>
+                    <div class="data-source-info">
+                        <div class="data-source-name">TradingView</div>
+                        <div class="data-source-desc" data-ar="الشارتات" data-en="Charts"></div>
+                    </div>
+                </div>
+                <div class="data-source">
+                    <div class="data-source-icon ai">🧠</div>
+                    <div class="data-source-info">
+                        <div class="data-source-name" data-ar="ذكاء اصطناعي" data-en="AI Models"></div>
+                        <div class="data-source-desc">GPT-4 / Claude / Gemini</div>
+                    </div>
+                </div>
+                <div class="data-source">
+                    <div class="data-source-icon" style="background: linear-gradient(135deg, #ff6b6b, #ee5a5a);">⏱</div>
+                    <div class="data-source-info">
+                        <div class="data-source-name" data-ar="تحديث مستمر" data-en="Live Updates"></div>
+                        <div class="data-source-desc" data-ar="كل دقيقتين" data-en="Every 2 min"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="data-disclaimer" data-ar="⚠️ التوصيات للأغراض التعليمية فقط. قرارات التداول مسؤوليتك الشخصية." data-en="⚠️ Recommendations are for educational purposes only. Trading decisions are your own responsibility."></div>
         </div>
         
         <div class="footer">Aziz Forex © 2024</div>
