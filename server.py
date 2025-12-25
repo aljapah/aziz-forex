@@ -256,6 +256,26 @@ def send_ntfy(channel: str, title: str, message: str):
     except Exception as e:
         print(f"Ntfy error: {e}")
 
+def send_telegram(chat_id: str, token: str, title: str, message: str):
+    """إرسال إشعار عبر Telegram"""
+    if not chat_id or not token:
+        return
+    
+    try:
+        text = f"*{title}*\n\n{message}"
+        url = f"https://api.telegram.org/bot{token}/sendMessage"
+        data = json.dumps({
+            "chat_id": chat_id,
+            "text": text,
+            "parse_mode": "Markdown"
+        }).encode('utf-8')
+        
+        req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
+        urllib.request.urlopen(req, timeout=5)
+        print(f"Telegram sent to {chat_id}")
+    except Exception as e:
+        print(f"Telegram error: {e}")
+
 def parse_signal(signal_text: str, price: float):
     """تحليل رد الذكاء الاصطناعي"""
     result = {"signal": signal_text, "price": price}
@@ -298,6 +318,8 @@ async def analyze_endpoint(
     ai: str = Query("openai"),
     strategy: str = Query("rsi"),
     ntfy: str = Query(""),
+    tgChat: str = Query(""),
+    tgToken: str = Query(""),
     useChart: str = Query("true")
 ):
     """API endpoint للتحليل - BYOK مع صورة الشارت"""
@@ -338,11 +360,12 @@ async def analyze_endpoint(
     # تحليل الرد
     result = parse_signal(signal_text, data["price"])
     
-    # إرسال إشعار إذا في فرصة
+    # إرسال إشعارات إذا في فرصة
     if "BUY" in signal_text or "SELL" in signal_text:
         signal_type = "🟢 شراء" if "BUY" in signal_text else "🔴 بيع"
         msg = f"{name}\nEntry: {result.get('entry', data['price'])}\nSL: {result.get('sl', '--')}\nTP: {result.get('tp', '--')}\nLot: {result.get('lot', '0.01')}"
         send_ntfy(ntfy, signal_type, msg)
+        send_telegram(tgChat, tgToken, signal_type, msg)
     
     return result
 

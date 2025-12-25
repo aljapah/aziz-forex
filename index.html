@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aziz Forex - مراقب السوق</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -15,11 +15,43 @@
             color: #fff;
         }
         
+        body.en { font-family: 'Inter', sans-serif; direction: ltr; }
+        
         .container { max-width: 500px; margin: 0 auto; padding: 15px; }
+        
+        /* Language Toggle */
+        .lang-toggle {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 5px;
+            display: flex;
+            gap: 5px;
+            z-index: 100;
+        }
+        
+        .lang-btn {
+            padding: 5px 12px;
+            border: none;
+            background: transparent;
+            color: #888;
+            cursor: pointer;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            transition: all 0.3s;
+        }
+        
+        .lang-btn.active {
+            background: #00d4ff;
+            color: #000;
+        }
         
         .header {
             text-align: center;
-            padding: 20px 0;
+            padding: 25px 0 15px;
             margin-bottom: 15px;
         }
         
@@ -58,30 +90,23 @@
         
         .status-text { color: #00ff88; font-weight: 500; font-size: 0.8rem; }
         
-        /* Accordion Cards */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
+        /* Cards */
         .card {
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 12px;
             overflow: hidden;
             transition: all 0.3s;
+            margin-bottom: 10px;
         }
         
         .card.active {
-            grid-column: span 2;
             background: rgba(255,255,255,0.05);
             border-color: #00d4ff;
         }
         
         .card-header {
-            padding: 15px;
+            padding: 12px 15px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -89,9 +114,7 @@
             transition: background 0.3s;
         }
         
-        .card-header:hover {
-            background: rgba(255,255,255,0.05);
-        }
+        .card-header:hover { background: rgba(255,255,255,0.05); }
         
         .card-title {
             display: flex;
@@ -101,42 +124,39 @@
             font-weight: 600;
         }
         
-        .card-title-icon {
-            font-size: 1.1rem;
+        .card-icon { font-size: 1.1rem; }
+        
+        .card-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .card-value {
             font-size: 0.7rem;
             color: #00d4ff;
-            max-width: 120px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            background: rgba(0, 212, 255, 0.1);
+            padding: 3px 8px;
+            border-radius: 10px;
         }
         
         .card-arrow {
             color: #666;
             transition: transform 0.3s;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
         }
         
-        .card.active .card-arrow {
-            transform: rotate(180deg);
-        }
+        .card.active .card-arrow { transform: rotate(180deg); }
         
         .card-content {
             display: none;
             padding: 0 15px 15px;
         }
         
-        .card.active .card-content {
-            display: block;
-        }
+        .card.active .card-content { display: block; }
         
         /* Form Elements */
-        .form-group {
-            margin-bottom: 12px;
-        }
+        .form-group { margin-bottom: 12px; }
         
         .form-label {
             display: block;
@@ -153,7 +173,7 @@
             border-radius: 8px;
             color: #fff;
             font-size: 0.85rem;
-            font-family: 'Tajawal', sans-serif;
+            font-family: inherit;
         }
         
         .form-select {
@@ -164,20 +184,16 @@
             background-position: left 12px center;
         }
         
+        body.en .form-select { background-position: right 12px center; }
+        
         .form-select:focus, .form-input:focus {
             outline: none;
             border-color: #00d4ff;
         }
         
-        .form-select option {
-            background: #1a1a2e;
-        }
+        .form-select option { background: #1a1a2e; }
         
-        .form-hint {
-            font-size: 0.65rem;
-            color: #555;
-            margin-top: 4px;
-        }
+        .form-hint { font-size: 0.65rem; color: #555; margin-top: 4px; }
         
         /* Checkbox */
         .checkbox-label {
@@ -195,43 +211,84 @@
             accent-color: #00d4ff;
         }
         
-        /* Multi Select */
-        .pairs-list {
-            max-height: 200px;
-            overflow-y: auto;
-            background: rgba(0,0,0,0.2);
-            border-radius: 8px;
-            padding: 5px;
+        /* Categories Grid */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
         }
         
+        .category-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .category-card.active {
+            border-color: #00d4ff;
+            background: rgba(0, 212, 255, 0.05);
+        }
+        
+        .category-header {
+            padding: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .category-count {
+            background: #00d4ff;
+            color: #000;
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+        
+        .category-items {
+            display: none;
+            padding: 5px 10px 10px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .category-card.active .category-items { display: block; }
+        
         .pair-item {
-            padding: 8px 10px;
+            padding: 6px 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
             border-radius: 6px;
             transition: background 0.2s;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
         
-        .pair-item:hover {
-            background: rgba(255,255,255,0.1);
-        }
+        .pair-item:hover { background: rgba(255,255,255,0.1); }
         
-        .pair-item.selected {
-            background: rgba(0, 212, 255, 0.15);
-        }
+        .pair-item.selected { background: rgba(0, 212, 255, 0.15); }
         
         .pair-checkbox {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 4px;
+            border-radius: 3px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-size: 9px;
             flex-shrink: 0;
         }
         
@@ -241,22 +298,11 @@
             color: #000;
         }
         
-        .pairs-category {
-            padding: 5px 10px;
-            font-size: 0.7rem;
-            color: #00d4ff;
-            font-weight: 600;
-            margin-top: 5px;
-        }
-        
-        /* Selected Tags */
-        .selected-count {
-            background: #00d4ff;
-            color: #000;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.7rem;
-            font-weight: 600;
+        /* Notifications Row */
+        .notif-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
         }
         
         /* Start Button */
@@ -271,6 +317,7 @@
             transition: all 0.3s;
             background: linear-gradient(135deg, #00d4ff, #00ff88);
             color: #000;
+            margin-top: 10px;
             margin-bottom: 15px;
         }
         
@@ -280,9 +327,7 @@
             cursor: not-allowed;
         }
         
-        .stop-btn {
-            background: linear-gradient(135deg, #ff4444, #ff6b6b);
-        }
+        .stop-btn { background: linear-gradient(135deg, #ff4444, #ff6b6b); }
         
         /* Signal */
         .signal-card {
@@ -338,123 +383,158 @@
         }
         
         .waiting.active { display: block; }
-        
         .waiting-icon { font-size: 1.8rem; margin-bottom: 5px; }
         
-        /* Footer */
         .footer { text-align: center; padding: 10px; color: #333; font-size: 0.65rem; }
+        
+        /* Total Selected Badge */
+        .total-selected {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.75rem;
+            color: #888;
+        }
+        
+        .total-selected span {
+            background: #00d4ff;
+            color: #000;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
+    <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('ar')">عربي</button>
+        <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+    
     <div class="container">
         <!-- Header -->
         <div class="header">
             <div class="logo">Aziz Forex</div>
-            <div class="subtitle">مراقب السوق بالذكاء الاصطناعي</div>
+            <div class="subtitle" data-ar="مراقب السوق بالذكاء الاصطناعي" data-en="AI Market Monitor"></div>
         </div>
         
         <!-- Status -->
         <div class="status-bar">
             <div class="status-dot" id="statusDot"></div>
-            <span class="status-text" id="statusText">جاهز للمراقبة</span>
+            <span class="status-text" id="statusText" data-ar="جاهز للمراقبة" data-en="Ready to monitor"></span>
         </div>
         
-        <!-- Cards Grid -->
-        <div class="cards-grid">
-            <!-- AI Card -->
-            <div class="card" id="aiCard">
-                <div class="card-header" onclick="toggleCard('aiCard')">
-                    <div class="card-title">
-                        <span class="card-title-icon">🤖</span>
-                        <span>الذكاء</span>
-                    </div>
-                    <div class="card-value" id="aiValue">GPT-4</div>
-                    <span class="card-arrow">▼</span>
+        <!-- AI Card -->
+        <div class="card" id="aiCard">
+            <div class="card-header" onclick="toggleCard('aiCard')">
+                <div class="card-title">
+                    <span class="card-icon">🤖</span>
+                    <span data-ar="الذكاء الاصطناعي" data-en="AI Model"></span>
                 </div>
-                <div class="card-content">
-                    <div class="form-group">
-                        <label class="form-label">نوع الذكاء</label>
-                        <select class="form-select" id="aiType" onchange="updateCardValue('aiCard', 'aiValue', this.options[this.selectedIndex].text)">
-                            <option value="openai">OpenAI (GPT-4)</option>
-                            <option value="anthropic">Claude</option>
-                            <option value="google">Gemini</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">مفتاح API</label>
-                        <input type="password" class="form-input" id="apiKey" placeholder="sk-...">
-                        <div class="form-hint">🔒 يُحفظ محلياً فقط</div>
-                    </div>
+                <div class="card-info">
+                    <span class="card-value" id="aiValue">GPT-4</span>
+                    <span class="card-arrow">▼</span>
                 </div>
             </div>
-            
-            <!-- Pairs Card -->
-            <div class="card" id="pairsCard">
-                <div class="card-header" onclick="toggleCard('pairsCard')">
-                    <div class="card-title">
-                        <span class="card-title-icon">💱</span>
-                        <span>الأزواج</span>
-                    </div>
-                    <span class="selected-count" id="pairsCount">0</span>
-                    <span class="card-arrow">▼</span>
+            <div class="card-content">
+                <div class="form-group">
+                    <label class="form-label" data-ar="نوع الذكاء" data-en="AI Type"></label>
+                    <select class="form-select" id="aiType" onchange="updateCardValue('aiCard', 'aiValue', this.options[this.selectedIndex].text)">
+                        <option value="openai">OpenAI (GPT-4)</option>
+                        <option value="anthropic">Anthropic (Claude)</option>
+                        <option value="google">Google (Gemini)</option>
+                    </select>
                 </div>
-                <div class="card-content">
-                    <div class="pairs-list" id="pairsList"></div>
-                </div>
-            </div>
-            
-            <!-- Strategy Card -->
-            <div class="card" id="strategyCard">
-                <div class="card-header" onclick="toggleCard('strategyCard')">
-                    <div class="card-title">
-                        <span class="card-title-icon">📈</span>
-                        <span>الاستراتيجية</span>
-                    </div>
-                    <div class="card-value" id="strategyValue">RSI</div>
-                    <span class="card-arrow">▼</span>
-                </div>
-                <div class="card-content">
-                    <div class="form-group">
-                        <select class="form-select" id="strategy" onchange="updateCardValue('strategyCard', 'strategyValue', this.options[this.selectedIndex].text.split(' ')[0])">
-                            <option value="rsi">RSI (ذروة البيع/الشراء)</option>
-                            <option value="trend">Trend (تتبع الاتجاه)</option>
-                            <option value="breakout">Breakout (كسر المستويات)</option>
-                            <option value="scalping">Scalping (مضاربة سريعة)</option>
-                            <option value="swing">Swing (تداول متأرجح)</option>
-                            <option value="price_action">Price Action (حركة السعر)</option>
-                            <option value="smart_money">Smart Money (السيولة الذكية)</option>
-                            <option value="supply_demand">Supply/Demand (عرض وطلب)</option>
-                        </select>
-                    </div>
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="useChart" checked>
-                        تحليل الشارت بصرياً
-                    </label>
+                <div class="form-group">
+                    <label class="form-label" data-ar="مفتاح API" data-en="API Key"></label>
+                    <input type="password" class="form-input" id="apiKey" placeholder="sk-...">
+                    <div class="form-hint" data-ar="🔒 يُحفظ محلياً فقط" data-en="🔒 Stored locally only"></div>
                 </div>
             </div>
-            
-            <!-- Notifications Card -->
-            <div class="card" id="notifyCard">
-                <div class="card-header" onclick="toggleCard('notifyCard')">
-                    <div class="card-title">
-                        <span class="card-title-icon">🔔</span>
-                        <span>الإشعارات</span>
-                    </div>
-                    <div class="card-value" id="notifyValue">--</div>
+        </div>
+        
+        <!-- Pairs Card -->
+        <div class="card" id="pairsCard">
+            <div class="card-header" onclick="toggleCard('pairsCard')">
+                <div class="card-title">
+                    <span class="card-icon">💱</span>
+                    <span data-ar="الأزواج" data-en="Trading Pairs"></span>
+                </div>
+                <div class="card-info">
+                    <span class="card-value" id="pairsCount">0</span>
                     <span class="card-arrow">▼</span>
                 </div>
-                <div class="card-content">
+            </div>
+            <div class="card-content">
+                <div class="categories-grid" id="categoriesGrid"></div>
+                <div class="total-selected" id="totalSelected"></div>
+            </div>
+        </div>
+        
+        <!-- Strategy Card -->
+        <div class="card" id="strategyCard">
+            <div class="card-header" onclick="toggleCard('strategyCard')">
+                <div class="card-title">
+                    <span class="card-icon">📈</span>
+                    <span data-ar="الاستراتيجية" data-en="Strategy"></span>
+                </div>
+                <div class="card-info">
+                    <span class="card-value" id="strategyValue">RSI</span>
+                    <span class="card-arrow">▼</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="form-group">
+                    <select class="form-select" id="strategy" onchange="updateCardValue('strategyCard', 'strategyValue', this.options[this.selectedIndex].text.split(' ')[0])">
+                        <option value="rsi" data-ar="RSI (ذروة البيع/الشراء)" data-en="RSI (Overbought/Oversold)">RSI</option>
+                        <option value="trend" data-ar="Trend (تتبع الاتجاه)" data-en="Trend Following">Trend</option>
+                        <option value="breakout" data-ar="Breakout (كسر المستويات)" data-en="Breakout Trading">Breakout</option>
+                        <option value="scalping" data-ar="Scalping (مضاربة سريعة)" data-en="Scalping">Scalping</option>
+                        <option value="swing" data-ar="Swing (تداول متأرجح)" data-en="Swing Trading">Swing</option>
+                        <option value="price_action" data-ar="Price Action (حركة السعر)" data-en="Price Action">Price Action</option>
+                        <option value="smart_money" data-ar="Smart Money (السيولة الذكية)" data-en="Smart Money Concepts">Smart Money</option>
+                        <option value="supply_demand" data-ar="Supply/Demand (عرض وطلب)" data-en="Supply & Demand">Supply/Demand</option>
+                    </select>
+                </div>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="useChart" checked>
+                    <span data-ar="تحليل الشارت بصرياً" data-en="Visual chart analysis"></span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- Notifications Card -->
+        <div class="card" id="notifyCard">
+            <div class="card-header" onclick="toggleCard('notifyCard')">
+                <div class="card-title">
+                    <span class="card-icon">🔔</span>
+                    <span data-ar="الإشعارات" data-en="Notifications"></span>
+                </div>
+                <div class="card-info">
+                    <span class="card-value" id="notifyValue">--</span>
+                    <span class="card-arrow">▼</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="notif-row">
                     <div class="form-group">
-                        <label class="form-label">قناة Ntfy</label>
-                        <input type="text" class="form-input" id="ntfyChannel" placeholder="my-alerts" oninput="document.getElementById('notifyValue').textContent = this.value || '--'">
-                        <div class="form-hint">حمّل Ntfy واشترك بنفس الاسم</div>
+                        <label class="form-label">📱 Ntfy</label>
+                        <input type="text" class="form-input" id="ntfyChannel" placeholder="my-alerts" oninput="updateNotifyValue()">
                     </div>
+                    <div class="form-group">
+                        <label class="form-label">✈️ Telegram</label>
+                        <input type="text" class="form-input" id="telegramChat" placeholder="Chat ID" oninput="updateNotifyValue()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" data-ar="Telegram Bot Token" data-en="Telegram Bot Token"></label>
+                    <input type="password" class="form-input" id="telegramToken" placeholder="123456:ABC...">
+                    <div class="form-hint" data-ar="احصل عليه من @BotFather" data-en="Get from @BotFather"></div>
                 </div>
             </div>
         </div>
         
         <!-- Start Button -->
-        <button class="start-btn" id="startBtn" onclick="toggleMonitoring()" disabled>ابدأ المراقبة</button>
+        <button class="start-btn" id="startBtn" onclick="toggleMonitoring()" disabled data-ar="ابدأ المراقبة" data-en="Start Monitoring"></button>
         
         <!-- Signal -->
         <div class="signal-card" id="signalCard">
@@ -464,19 +544,19 @@
             </div>
             <div class="signal-details">
                 <div class="signal-item">
-                    <div class="signal-label">الدخول</div>
+                    <div class="signal-label" data-ar="الدخول" data-en="Entry"></div>
                     <div class="signal-value" id="entryPrice">--</div>
                 </div>
                 <div class="signal-item">
-                    <div class="signal-label">وقف</div>
+                    <div class="signal-label" data-ar="وقف" data-en="SL"></div>
                     <div class="signal-value" id="slPrice">--</div>
                 </div>
                 <div class="signal-item">
-                    <div class="signal-label">هدف</div>
+                    <div class="signal-label" data-ar="هدف" data-en="TP"></div>
                     <div class="signal-value" id="tpPrice">--</div>
                 </div>
                 <div class="signal-item">
-                    <div class="signal-label">لوت</div>
+                    <div class="signal-label" data-ar="لوت" data-en="Lot"></div>
                     <div class="signal-value" id="lotSize">--</div>
                 </div>
             </div>
@@ -485,53 +565,92 @@
         <!-- Waiting -->
         <div class="waiting" id="waiting">
             <div class="waiting-icon">⏳</div>
-            <div>يراقب السوق...</div>
+            <div data-ar="يراقب السوق..." data-en="Monitoring market..."></div>
         </div>
         
         <div class="footer">Aziz Forex © 2024</div>
     </div>
     
     <script>
-        // Pairs Data
-        const pairsData = {
-            '💰 كريبتو': [
-                { symbol: 'BTC-USD', name: 'BTC/USD', label: 'بيتكوين' },
-                { symbol: 'ETH-USD', name: 'ETH/USD', label: 'إيثريوم' },
-                { symbol: 'BNB-USD', name: 'BNB/USD', label: 'باينانس' },
-                { symbol: 'SOL-USD', name: 'SOL/USD', label: 'سولانا' },
-                { symbol: 'XRP-USD', name: 'XRP/USD', label: 'ريبل' },
-                { symbol: 'DOGE-USD', name: 'DOGE/USD', label: 'دوج' },
-                { symbol: 'ADA-USD', name: 'ADA/USD', label: 'كاردانو' },
-                { symbol: 'AVAX-USD', name: 'AVAX/USD', label: 'أفالانش' },
-                { symbol: 'DOT-USD', name: 'DOT/USD', label: 'بولكادوت' },
-                { symbol: 'MATIC-USD', name: 'MATIC/USD', label: 'بوليجون' },
-                { symbol: 'LINK-USD', name: 'LINK/USD', label: 'تشين لينك' },
-            ],
-            '💵 فوركس': [
-                { symbol: 'EURUSD=X', name: 'EUR/USD', label: 'يورو/دولار' },
-                { symbol: 'GBPUSD=X', name: 'GBP/USD', label: 'باوند/دولار' },
-                { symbol: 'USDJPY=X', name: 'USD/JPY', label: 'دولار/ين' },
-                { symbol: 'AUDUSD=X', name: 'AUD/USD', label: 'استرالي' },
-                { symbol: 'USDCAD=X', name: 'USD/CAD', label: 'دولار/كندي' },
-                { symbol: 'NZDUSD=X', name: 'NZD/USD', label: 'نيوزلندي' },
-                { symbol: 'USDCHF=X', name: 'USD/CHF', label: 'دولار/فرنك' },
-                { symbol: 'EURGBP=X', name: 'EUR/GBP', label: 'يورو/باوند' },
-                { symbol: 'EURJPY=X', name: 'EUR/JPY', label: 'يورو/ين' },
-                { symbol: 'GBPJPY=X', name: 'GBP/JPY', label: 'باوند/ين' },
-            ],
-            '🥇 معادن': [
-                { symbol: 'GC=F', name: 'XAU/USD', label: 'الذهب' },
-                { symbol: 'SI=F', name: 'XAG/USD', label: 'الفضة' },
-                { symbol: 'PL=F', name: 'XPT/USD', label: 'البلاتين' },
-                { symbol: 'HG=F', name: 'النحاس', label: 'النحاس' },
-            ],
-            '📊 مؤشرات': [
-                { symbol: '^GSPC', name: 'S&P 500', label: 'إس آند بي' },
-                { symbol: '^DJI', name: 'Dow Jones', label: 'داو جونز' },
-                { symbol: '^IXIC', name: 'NASDAQ', label: 'ناسداك' },
-                { symbol: '^GDAXI', name: 'DAX', label: 'داكس' },
-                { symbol: '^FTSE', name: 'FTSE', label: 'فوتسي' },
-            ]
+        // Language
+        let currentLang = localStorage.getItem('lang') || 'ar';
+        
+        function setLang(lang) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+            document.body.classList.toggle('en', lang === 'en');
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.lang = lang;
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.includes(lang === 'ar' ? 'عربي' : 'EN'));
+            });
+            
+            document.querySelectorAll('[data-ar]').forEach(el => {
+                el.textContent = el.getAttribute(`data-${lang}`);
+            });
+            
+            // Update strategy options
+            document.querySelectorAll('#strategy option').forEach(opt => {
+                if (opt.dataset.ar && opt.dataset.en) {
+                    opt.textContent = opt.getAttribute(`data-${lang}`);
+                }
+            });
+            
+            buildCategories();
+            updateTotalSelected();
+        }
+        
+        // Categories Data
+        const categoriesData = {
+            crypto: {
+                icon: '💰',
+                name: { ar: 'كريبتو', en: 'Crypto' },
+                pairs: [
+                    { symbol: 'BTC-USD', name: 'BTC/USD', label: { ar: 'بيتكوين', en: 'Bitcoin' } },
+                    { symbol: 'ETH-USD', name: 'ETH/USD', label: { ar: 'إيثريوم', en: 'Ethereum' } },
+                    { symbol: 'BNB-USD', name: 'BNB/USD', label: { ar: 'باينانس', en: 'Binance' } },
+                    { symbol: 'SOL-USD', name: 'SOL/USD', label: { ar: 'سولانا', en: 'Solana' } },
+                    { symbol: 'XRP-USD', name: 'XRP/USD', label: { ar: 'ريبل', en: 'Ripple' } },
+                    { symbol: 'DOGE-USD', name: 'DOGE/USD', label: { ar: 'دوج', en: 'Dogecoin' } },
+                    { symbol: 'ADA-USD', name: 'ADA/USD', label: { ar: 'كاردانو', en: 'Cardano' } },
+                    { symbol: 'AVAX-USD', name: 'AVAX/USD', label: { ar: 'أفالانش', en: 'Avalanche' } },
+                ]
+            },
+            forex: {
+                icon: '💵',
+                name: { ar: 'فوركس', en: 'Forex' },
+                pairs: [
+                    { symbol: 'EURUSD=X', name: 'EUR/USD', label: { ar: 'يورو/دولار', en: 'Euro/Dollar' } },
+                    { symbol: 'GBPUSD=X', name: 'GBP/USD', label: { ar: 'باوند/دولار', en: 'Pound/Dollar' } },
+                    { symbol: 'USDJPY=X', name: 'USD/JPY', label: { ar: 'دولار/ين', en: 'Dollar/Yen' } },
+                    { symbol: 'AUDUSD=X', name: 'AUD/USD', label: { ar: 'استرالي', en: 'Australian' } },
+                    { symbol: 'USDCAD=X', name: 'USD/CAD', label: { ar: 'دولار/كندي', en: 'Dollar/CAD' } },
+                    { symbol: 'NZDUSD=X', name: 'NZD/USD', label: { ar: 'نيوزلندي', en: 'NZD' } },
+                    { symbol: 'USDCHF=X', name: 'USD/CHF', label: { ar: 'دولار/فرنك', en: 'Dollar/CHF' } },
+                    { symbol: 'EURGBP=X', name: 'EUR/GBP', label: { ar: 'يورو/باوند', en: 'Euro/Pound' } },
+                ]
+            },
+            metals: {
+                icon: '🥇',
+                name: { ar: 'معادن', en: 'Metals' },
+                pairs: [
+                    { symbol: 'GC=F', name: 'XAU/USD', label: { ar: 'الذهب', en: 'Gold' } },
+                    { symbol: 'SI=F', name: 'XAG/USD', label: { ar: 'الفضة', en: 'Silver' } },
+                    { symbol: 'PL=F', name: 'XPT/USD', label: { ar: 'البلاتين', en: 'Platinum' } },
+                    { symbol: 'HG=F', name: 'Copper', label: { ar: 'النحاس', en: 'Copper' } },
+                ]
+            },
+            indices: {
+                icon: '📊',
+                name: { ar: 'مؤشرات', en: 'Indices' },
+                pairs: [
+                    { symbol: '^GSPC', name: 'S&P 500', label: { ar: 'إس آند بي', en: 'S&P 500' } },
+                    { symbol: '^DJI', name: 'Dow Jones', label: { ar: 'داو جونز', en: 'Dow Jones' } },
+                    { symbol: '^IXIC', name: 'NASDAQ', label: { ar: 'ناسداك', en: 'NASDAQ' } },
+                    { symbol: '^GDAXI', name: 'DAX', label: { ar: 'داكس', en: 'DAX' } },
+                ]
+            }
         };
         
         let selectedPairs = [];
@@ -541,15 +660,15 @@
         // Toggle Card
         function toggleCard(cardId) {
             const card = document.getElementById(cardId);
-            const wasActive = card.classList.contains('active');
-            
-            // Close all cards
-            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-            
-            // Open clicked card if it wasn't active
-            if (!wasActive) {
-                card.classList.add('active');
-            }
+            card.classList.toggle('active');
+        }
+        
+        function toggleCategory(catId) {
+            const cat = document.getElementById(`cat-${catId}`);
+            document.querySelectorAll('.category-card').forEach(c => {
+                if (c.id !== `cat-${catId}`) c.classList.remove('active');
+            });
+            cat.classList.toggle('active');
         }
         
         function updateCardValue(cardId, valueId, text) {
@@ -557,39 +676,93 @@
             saveSettings();
         }
         
-        // Build Pairs List
-        function buildPairsList() {
-            const container = document.getElementById('pairsList');
+        // Build Categories
+        function buildCategories() {
+            const container = document.getElementById('categoriesGrid');
             container.innerHTML = '';
             
-            for (const [category, pairs] of Object.entries(pairsData)) {
-                const catDiv = document.createElement('div');
-                catDiv.className = 'pairs-category';
-                catDiv.textContent = category;
-                container.appendChild(catDiv);
+            for (const [catId, cat] of Object.entries(categoriesData)) {
+                const catCard = document.createElement('div');
+                catCard.className = 'category-card';
+                catCard.id = `cat-${catId}`;
                 
-                pairs.forEach(pair => {
+                const selectedInCat = selectedPairs.filter(p => 
+                    cat.pairs.some(cp => cp.symbol === p.symbol)
+                ).length;
+                
+                catCard.innerHTML = `
+                    <div class="category-header" onclick="toggleCategory('${catId}')">
+                        <div class="category-title">
+                            <span>${cat.icon}</span>
+                            <span>${cat.name[currentLang]}</span>
+                        </div>
+                        <span class="category-count" id="count-${catId}">${selectedInCat}</span>
+                    </div>
+                    <div class="category-items" id="items-${catId}"></div>
+                `;
+                
+                container.appendChild(catCard);
+                
+                const itemsContainer = document.getElementById(`items-${catId}`);
+                cat.pairs.forEach(pair => {
+                    const isSelected = selectedPairs.some(p => p.symbol === pair.symbol);
                     const item = document.createElement('div');
-                    item.className = 'pair-item';
+                    item.className = `pair-item${isSelected ? ' selected' : ''}`;
                     item.dataset.symbol = pair.symbol;
                     item.innerHTML = `<div class="pair-checkbox">✓</div><span>${pair.name}</span>`;
-                    item.onclick = () => togglePair(pair, item);
-                    container.appendChild(item);
+                    item.onclick = () => togglePair(pair, catId, item);
+                    itemsContainer.appendChild(item);
                 });
             }
         }
         
-        function togglePair(pair, element) {
-            if (element.classList.contains('selected')) {
+        function togglePair(pair, catId, element) {
+            const existingIndex = selectedPairs.findIndex(p => p.symbol === pair.symbol);
+            
+            if (existingIndex > -1) {
                 element.classList.remove('selected');
-                selectedPairs = selectedPairs.filter(p => p.symbol !== pair.symbol);
+                selectedPairs.splice(existingIndex, 1);
             } else {
                 element.classList.add('selected');
-                selectedPairs.push(pair);
+                selectedPairs.push({
+                    symbol: pair.symbol,
+                    name: pair.name,
+                    label: pair.label[currentLang]
+                });
             }
             
-            document.getElementById('pairsCount').textContent = selectedPairs.length;
+            updateCounts();
             updateStartButton();
+            saveSettings();
+        }
+        
+        function updateCounts() {
+            for (const [catId, cat] of Object.entries(categoriesData)) {
+                const count = selectedPairs.filter(p => 
+                    cat.pairs.some(cp => cp.symbol === p.symbol)
+                ).length;
+                document.getElementById(`count-${catId}`).textContent = count;
+            }
+            document.getElementById('pairsCount').textContent = selectedPairs.length;
+            updateTotalSelected();
+        }
+        
+        function updateTotalSelected() {
+            const total = selectedPairs.length;
+            const text = currentLang === 'ar' ? `${total} زوج محدد` : `${total} pairs selected`;
+            document.getElementById('totalSelected').innerHTML = total > 0 ? `<span>${text}</span>` : '';
+        }
+        
+        function updateNotifyValue() {
+            const ntfy = document.getElementById('ntfyChannel').value;
+            const tg = document.getElementById('telegramChat').value;
+            
+            let value = '--';
+            if (ntfy && tg) value = 'Ntfy + TG';
+            else if (ntfy) value = 'Ntfy';
+            else if (tg) value = 'Telegram';
+            
+            document.getElementById('notifyValue').textContent = value;
             saveSettings();
         }
         
@@ -604,6 +777,8 @@
             localStorage.setItem('apiKey', document.getElementById('apiKey').value);
             localStorage.setItem('strategy', document.getElementById('strategy').value);
             localStorage.setItem('ntfyChannel', document.getElementById('ntfyChannel').value);
+            localStorage.setItem('telegramChat', document.getElementById('telegramChat').value);
+            localStorage.setItem('telegramToken', document.getElementById('telegramToken').value);
             localStorage.setItem('useChart', document.getElementById('useChart').checked);
             localStorage.setItem('selectedPairs', JSON.stringify(selectedPairs));
         }
@@ -613,6 +788,8 @@
             const apiKey = localStorage.getItem('apiKey') || '';
             const strategy = localStorage.getItem('strategy') || 'rsi';
             const ntfy = localStorage.getItem('ntfyChannel') || '';
+            const tgChat = localStorage.getItem('telegramChat') || '';
+            const tgToken = localStorage.getItem('telegramToken') || '';
             const useChart = localStorage.getItem('useChart') !== 'false';
             const savedPairs = JSON.parse(localStorage.getItem('selectedPairs') || '[]');
             
@@ -620,22 +797,18 @@
             document.getElementById('apiKey').value = apiKey;
             document.getElementById('strategy').value = strategy;
             document.getElementById('ntfyChannel').value = ntfy;
+            document.getElementById('telegramChat').value = tgChat;
+            document.getElementById('telegramToken').value = tgToken;
             document.getElementById('useChart').checked = useChart;
             
             document.getElementById('aiValue').textContent = document.getElementById('aiType').options[document.getElementById('aiType').selectedIndex].text.split(' ')[0];
-            document.getElementById('strategyValue').textContent = document.getElementById('strategy').options[document.getElementById('strategy').selectedIndex].text.split(' ')[0];
-            document.getElementById('notifyValue').textContent = ntfy || '--';
+            document.getElementById('strategyValue').textContent = document.getElementById('strategy').value.toUpperCase();
             
-            // Restore selected pairs
-            savedPairs.forEach(pair => {
-                const item = document.querySelector(`.pair-item[data-symbol="${pair.symbol}"]`);
-                if (item) {
-                    item.classList.add('selected');
-                    selectedPairs.push(pair);
-                }
-            });
+            updateNotifyValue();
             
-            document.getElementById('pairsCount').textContent = selectedPairs.length;
+            selectedPairs = savedPairs;
+            buildCategories();
+            updateCounts();
             updateStartButton();
         }
         
@@ -643,7 +816,6 @@
         document.getElementById('apiKey').addEventListener('input', () => { updateStartButton(); saveSettings(); });
         document.getElementById('aiType').addEventListener('change', saveSettings);
         document.getElementById('strategy').addEventListener('change', saveSettings);
-        document.getElementById('ntfyChannel').addEventListener('input', saveSettings);
         document.getElementById('useChart').addEventListener('change', saveSettings);
         
         // Monitoring
@@ -657,10 +829,11 @@
             
             isMonitoring = true;
             const btn = document.getElementById('startBtn');
-            btn.textContent = 'إيقاف المراقبة';
+            btn.textContent = currentLang === 'ar' ? 'إيقاف المراقبة' : 'Stop Monitoring';
             btn.classList.add('stop-btn');
             
-            document.getElementById('statusText').textContent = `يراقب ${selectedPairs.length} زوج`;
+            const statusText = currentLang === 'ar' ? `يراقب ${selectedPairs.length} زوج` : `Monitoring ${selectedPairs.length} pairs`;
+            document.getElementById('statusText').textContent = statusText;
             document.getElementById('waiting').classList.add('active');
             document.getElementById('signalCard').className = 'signal-card';
             
@@ -671,10 +844,10 @@
         function stopMonitoring() {
             isMonitoring = false;
             const btn = document.getElementById('startBtn');
-            btn.textContent = 'ابدأ المراقبة';
+            btn.textContent = currentLang === 'ar' ? 'ابدأ المراقبة' : 'Start Monitoring';
             btn.classList.remove('stop-btn');
             
-            document.getElementById('statusText').textContent = 'جاهز للمراقبة';
+            document.getElementById('statusText').textContent = currentLang === 'ar' ? 'جاهز للمراقبة' : 'Ready to monitor';
             document.getElementById('waiting').classList.remove('active');
             document.getElementById('signalCard').className = 'signal-card';
             
@@ -684,17 +857,19 @@
         async function checkMarket() {
             if (!isMonitoring) return;
             
-            document.getElementById('statusText').textContent = 'جاري التحليل...';
+            document.getElementById('statusText').textContent = currentLang === 'ar' ? 'جاري التحليل...' : 'Analyzing...';
             
             const apiKey = document.getElementById('apiKey').value;
             const aiType = document.getElementById('aiType').value;
             const strategy = document.getElementById('strategy').value;
             const ntfy = document.getElementById('ntfyChannel').value;
+            const tgChat = document.getElementById('telegramChat').value;
+            const tgToken = document.getElementById('telegramToken').value;
             const useChart = document.getElementById('useChart').checked ? 'true' : 'false';
             
             for (const pair of selectedPairs) {
                 try {
-                    const response = await fetch(`/api/analyze?symbol=${encodeURIComponent(pair.symbol)}&name=${encodeURIComponent(pair.label)}&apiKey=${encodeURIComponent(apiKey)}&ai=${aiType}&strategy=${strategy}&ntfy=${encodeURIComponent(ntfy)}&useChart=${useChart}`);
+                    const response = await fetch(`/api/analyze?symbol=${encodeURIComponent(pair.symbol)}&name=${encodeURIComponent(pair.label)}&apiKey=${encodeURIComponent(apiKey)}&ai=${aiType}&strategy=${strategy}&ntfy=${encodeURIComponent(ntfy)}&tgChat=${encodeURIComponent(tgChat)}&tgToken=${encodeURIComponent(tgToken)}&useChart=${useChart}`);
                     const data = await response.json();
                     
                     if (data.signal && !data.signal.includes('⏳')) {
@@ -707,7 +882,8 @@
                 }
             }
             
-            document.getElementById('statusText').textContent = `يراقب ${selectedPairs.length} زوج`;
+            const statusText = currentLang === 'ar' ? `يراقب ${selectedPairs.length} زوج` : `Monitoring ${selectedPairs.length} pairs`;
+            document.getElementById('statusText').textContent = statusText;
         }
         
         function showSignal(data, pair) {
@@ -715,7 +891,7 @@
             const card = document.getElementById('signalCard');
             
             card.className = `signal-card ${isBuy ? 'buy' : 'sell'}`;
-            document.getElementById('signalType').textContent = isBuy ? '🟢 شراء' : '🔴 بيع';
+            document.getElementById('signalType').textContent = isBuy ? '🟢 ' + (currentLang === 'ar' ? 'شراء' : 'BUY') : '🔴 ' + (currentLang === 'ar' ? 'بيع' : 'SELL');
             document.getElementById('signalType').className = `signal-type ${isBuy ? 'buy' : 'sell'}`;
             document.getElementById('signalPair').textContent = pair.label;
             document.getElementById('entryPrice').textContent = data.entry || data.price || '--';
@@ -725,7 +901,7 @@
         }
         
         // Init
-        buildPairsList();
+        setLang(currentLang);
         loadSettings();
     </script>
 </body>
