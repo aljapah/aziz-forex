@@ -65,6 +65,78 @@
         
         .subtitle { color: #666; margin-top: 3px; font-size: 0.75rem; }
         
+        /* Intro Section */
+        .intro {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(0, 255, 136, 0.05));
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .intro-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .intro-text {
+            font-size: 0.78rem;
+            color: #aaa;
+            line-height: 1.6;
+        }
+        
+        .intro-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .intro-feature {
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .intro-feature-icon {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+        
+        .intro-feature-text {
+            font-size: 0.7rem;
+            color: #888;
+        }
+        
+        .intro-toggle {
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .intro-toggle-btn {
+            background: none;
+            border: none;
+            color: #00d4ff;
+            font-size: 0.7rem;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+        
+        .intro-toggle-btn:hover {
+            text-decoration: underline;
+        }
+        
+        .intro.collapsed .intro-text,
+        .intro.collapsed .intro-features {
+            display: none;
+        }
+        
         /* Status */
         .status-bar {
             display: flex;
@@ -417,6 +489,38 @@
             <div class="subtitle" data-ar="مراقب السوق بالذكاء الاصطناعي" data-en="AI Market Monitor"></div>
         </div>
         
+        <!-- Intro -->
+        <div class="intro" id="introSection">
+            <div class="intro-title">
+                <span>✨</span>
+                <span data-ar="مرحباً بك في عزيز فوركس" data-en="Welcome to Aziz Forex"></span>
+            </div>
+            <div class="intro-text" data-ar="مراقب ذكي يعمل بالذكاء الاصطناعي لمتابعة الأسواق المالية على مدار الساعة. اختر الأزواج والاستراتيجية، وسيقوم الذكاء بتحليل السوق وإرسال توصيات شراء/بيع مباشرة إلى جوالك." data-en="An AI-powered smart monitor that tracks financial markets 24/7. Select your pairs and strategy, and the AI will analyze the market and send buy/sell recommendations directly to your phone."></div>
+            
+            <div class="intro-features">
+                <div class="intro-feature">
+                    <div class="intro-feature-icon">🤖</div>
+                    <div class="intro-feature-text" data-ar="تحليل ذكي حقيقي" data-en="Real AI Analysis"></div>
+                </div>
+                <div class="intro-feature">
+                    <div class="intro-feature-icon">📊</div>
+                    <div class="intro-feature-text" data-ar="قراءة الشارت بصرياً" data-en="Visual Chart Reading"></div>
+                </div>
+                <div class="intro-feature">
+                    <div class="intro-feature-icon">🔔</div>
+                    <div class="intro-feature-text" data-ar="إشعارات فورية" data-en="Instant Notifications"></div>
+                </div>
+                <div class="intro-feature">
+                    <div class="intro-feature-icon">🎯</div>
+                    <div class="intro-feature-text" data-ar="Entry / SL / TP" data-en="Entry / SL / TP"></div>
+                </div>
+            </div>
+            
+            <div class="intro-toggle">
+                <button class="intro-toggle-btn" onclick="toggleIntro()" data-ar="إخفاء ▲" data-en="Hide ▲"></button>
+            </div>
+        </div>
+        
         <!-- Status -->
         <div class="status-bar">
             <div class="status-dot" id="statusDot"></div>
@@ -574,6 +678,24 @@
     <script>
         // Language
         let currentLang = localStorage.getItem('lang') || 'ar';
+        let introCollapsed = localStorage.getItem('introCollapsed') === 'true';
+        
+        function toggleIntro() {
+            const intro = document.getElementById('introSection');
+            const btn = intro.querySelector('.intro-toggle-btn');
+            introCollapsed = !introCollapsed;
+            intro.classList.toggle('collapsed', introCollapsed);
+            
+            if (introCollapsed) {
+                btn.setAttribute('data-ar', 'إظهار المقدمة ▼');
+                btn.setAttribute('data-en', 'Show intro ▼');
+            } else {
+                btn.setAttribute('data-ar', 'إخفاء ▲');
+                btn.setAttribute('data-en', 'Hide ▲');
+            }
+            btn.textContent = btn.getAttribute(`data-${currentLang}`);
+            localStorage.setItem('introCollapsed', introCollapsed);
+        }
         
         function setLang(lang) {
             currentLang = lang;
@@ -903,6 +1025,15 @@
         // Init
         setLang(currentLang);
         loadSettings();
+        
+        // Load intro state
+        if (introCollapsed) {
+            document.getElementById('introSection').classList.add('collapsed');
+            const btn = document.querySelector('.intro-toggle-btn');
+            btn.setAttribute('data-ar', 'إظهار المقدمة ▼');
+            btn.setAttribute('data-en', 'Show intro ▼');
+            btn.textContent = btn.getAttribute(`data-${currentLang}`);
+        }
     </script>
 </body>
 </html>
