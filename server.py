@@ -12,10 +12,20 @@ import os
 
 app = FastAPI()
 
-def get_market_data(symbol: str):
+TIMEFRAME_MAP = {
+    "1m": ("1m", "1d"),
+    "5m": ("5m", "1d"),
+    "15m": ("15m", "5d"),
+    "1h": ("1h", "5d"),
+    "4h": ("1h", "1mo"),  # Yahoo doesn't support 4h, use 1h
+    "1d": ("1d", "3mo"),
+}
+
+def get_market_data(symbol: str, timeframe: str = "1h"):
     """جلب بيانات السوق"""
     try:
-        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?interval=15m&range=1d"
+        interval, range_period = TIMEFRAME_MAP.get(timeframe, ("1h", "5d"))
+        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?interval={interval}&range={range_period}"
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         
         with urllib.request.urlopen(req, timeout=10) as response:
@@ -59,7 +69,7 @@ STRATEGY_PROMPTS = {
     "supply_demand": "Supply & Demand: Identify zones and trade reversals."
 }
 
-def get_chart_image(symbol: str, interval: str = "1h"):
+def get_chart_image(symbol: str, timeframe: str = "1h"):
     """جلب صورة الشارت من TradingView"""
     import base64
     
@@ -76,8 +86,11 @@ def get_chart_image(symbol: str, interval: str = "1h"):
     else:
         tv_symbol = symbol
     
+    # تحويل الإطار الزمني لصيغة TradingView
+    tv_interval = {"1m": "1", "5m": "5", "15m": "15", "1h": "60", "4h": "240", "1d": "D"}.get(timeframe, "60")
+    
     # استخدام chart-img.com API (مجاني)
-    chart_url = f"https://api.chart-img.com/v1/tradingview/advanced-chart?symbol={tv_symbol}&interval={interval}&theme=dark&width=800&height=500&key=demo"
+    chart_url = f"https://api.chart-img.com/v1/tradingview/advanced-chart?symbol={tv_symbol}&interval={tv_interval}&theme=dark&width=800&height=500&key=demo"
     
     try:
         req = urllib.request.Request(chart_url, headers={"User-Agent": "Mozilla/5.0"})
@@ -320,7 +333,8 @@ async def analyze_endpoint(
     ntfy: str = Query(""),
     tgChat: str = Query(""),
     tgToken: str = Query(""),
-    useChart: str = Query("true")
+    useChart: str = Query("true"),
+    timeframe: str = Query("1h")
 ):
     """API endpoint للتحليل - BYOK مع صورة الشارت"""
     
@@ -328,7 +342,7 @@ async def analyze_endpoint(
         return {"error": "No API key provided", "price": None, "signal": "⏳"}
     
     # جلب البيانات
-    data = get_market_data(symbol)
+    data = get_market_data(symbol, timeframe)
     
     if not data:
         return {"error": "Failed to fetch data", "price": None, "signal": "⏳"}
@@ -336,8 +350,8 @@ async def analyze_endpoint(
     # جلب صورة الشارت
     chart_image = None
     if useChart == "true":
-        print(f"Fetching chart for {symbol}...")
-        chart_image = get_chart_image(symbol)
+        print(f"Fetching chart for {symbol} ({timeframe})...")
+        chart_image = get_chart_image(symbol, timeframe)
         if chart_image:
             print(f"Chart image received ({len(chart_image)} bytes)")
         else:
