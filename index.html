@@ -20,7 +20,7 @@
         /* Layout */
         .app-layout {
             display: grid;
-            grid-template-columns: 320px 1fr;
+            grid-template-columns: 1fr 500px;
             min-height: 100vh;
         }
         
@@ -30,89 +30,159 @@
             }
         }
         
-        /* Sidebar - Control Panel */
-        .sidebar {
-            background: linear-gradient(180deg, #0d0d14 0%, #0a0a0f 100%);
-            border-left: 1px solid rgba(255,255,255,0.06);
-            padding: 20px;
-            overflow-y: auto;
-            max-height: 100vh;
-            position: sticky;
-            top: 0;
-        }
-        
-        body.en .sidebar {
-            border-left: none;
-            border-right: 1px solid rgba(255,255,255,0.06);
+        /* Main Content - Control Panel */
+        .main-content {
+            padding: 30px 50px;
+            background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.03) 0%, transparent 60%);
+            display: flex;
+            flex-direction: column;
         }
         
         @media (max-width: 1024px) {
-            .sidebar {
-                max-height: none;
-                position: relative;
-                border: none;
-                border-bottom: 1px solid rgba(255,255,255,0.06);
-            }
+            .main-content { padding: 20px; }
         }
         
-        .sidebar-header {
-            text-align: center;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            margin-bottom: 20px;
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
         
         .logo {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: 800;
             background: linear-gradient(135deg, #00d4ff, #00ff88);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
-        .logo-sub {
-            font-size: 0.7rem;
-            color: #444;
-            margin-top: 3px;
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 20px;
+            font-size: 0.8rem;
         }
         
-        /* Panel Sections */
-        .panel-section {
-            margin-bottom: 20px;
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
         }
         
-        .panel-title {
-            font-size: 0.75rem;
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        
+        .status-text { color: #00ff88; }
+        
+        .lang-toggle {
+            display: flex;
+            gap: 5px;
+            background: rgba(255,255,255,0.03);
+            padding: 4px;
+            border-radius: 8px;
+        }
+        
+        .lang-btn {
+            padding: 6px 12px;
+            border: none;
+            background: transparent;
             color: #555;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+        
+        .lang-btn.active {
+            background: #00d4ff;
+            color: #000;
+        }
+        
+        /* Control Panel */
+        .control-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        /* Section */
+        .ctrl-section {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 20px;
+        }
+        
+        .ctrl-section:hover {
+            border-color: rgba(255,255,255,0.1);
+        }
+        
+        .section-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
         
-        .panel-title::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: rgba(255,255,255,0.06);
+        .section-title-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
         }
         
+        .section-title-icon.ai { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+        .section-title-icon.tf { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+        .section-title-icon.pairs { background: linear-gradient(135deg, #00d4ff, #0ea5e9); }
+        .section-title-icon.strategy { background: linear-gradient(135deg, #10b981, #34d399); }
+        .section-title-icon.notify { background: linear-gradient(135deg, #ef4444, #f87171); }
+        
         /* Form */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; }
+        }
+        
         .form-group { margin-bottom: 12px; }
+        .form-group:last-child { margin-bottom: 0; }
         
         .form-label {
             display: block;
             margin-bottom: 6px;
-            color: #888;
-            font-size: 0.8rem;
+            color: #666;
+            font-size: 0.75rem;
         }
         
         .form-select, .form-input {
             width: 100%;
             padding: 12px 14px;
-            background: rgba(255,255,255,0.03);
+            background: rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.08);
             border-radius: 10px;
             color: #fff;
@@ -139,120 +209,107 @@
         
         .form-select option { background: #1a1a2e; }
         
-        .form-hint {
-            font-size: 0.7rem;
-            color: #444;
-            margin-top: 5px;
-        }
+        .form-hint { font-size: 0.7rem; color: #444; margin-top: 5px; }
         
         /* Timeframe Chips */
         .timeframe-chips {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 8px;
         }
         
         .tf-chip {
-            padding: 8px 12px;
-            background: rgba(255,255,255,0.03);
+            padding: 10px 16px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            color: #888;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        
+        .tf-chip:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.15);
+        }
+        
+        .tf-chip.active {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 255, 136, 0.15));
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+        
+        /* Categories */
+        .cat-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .cat-tab {
+            padding: 8px 14px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            color: #666;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .cat-tab:hover { border-color: rgba(255,255,255,0.15); }
+        
+        .cat-tab.active {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: rgba(0, 212, 255, 0.3);
+            color: #00d4ff;
+        }
+        
+        .pairs-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 8px;
+        }
+        
+        .pairs-grid.active { display: grid; }
+        
+        .pair-chip {
+            padding: 10px 12px;
+            background: rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.08);
             border-radius: 8px;
             color: #888;
             font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.2s;
+            text-align: center;
         }
         
-        .tf-chip:hover {
-            background: rgba(255,255,255,0.06);
-        }
+        .pair-chip:hover { border-color: rgba(255,255,255,0.15); }
         
-        .tf-chip.active {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 255, 136, 0.1));
+        .pair-chip.selected {
+            background: rgba(0, 212, 255, 0.15);
             border-color: #00d4ff;
-            color: #00d4ff;
+            color: #fff;
         }
         
-        /* Categories Mini */
-        .cat-mini {
+        .selected-pairs {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
-            margin-bottom: 10px;
-        }
-        
-        .cat-btn {
-            padding: 6px 10px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 6px;
-            color: #666;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .cat-btn:hover { background: rgba(255,255,255,0.06); }
-        
-        .cat-btn.active {
-            background: rgba(0, 212, 255, 0.1);
-            border-color: rgba(0, 212, 255, 0.3);
-            color: #00d4ff;
-        }
-        
-        .pairs-dropdown {
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            max-height: 200px;
-            overflow-y: auto;
-            display: none;
-        }
-        
-        .pairs-dropdown.active { display: block; }
-        
-        .pair-row {
-            padding: 10px 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: background 0.2s;
-            font-size: 0.85rem;
-        }
-        
-        .pair-row:hover { background: rgba(255,255,255,0.05); }
-        .pair-row.selected { background: rgba(0, 212, 255, 0.1); }
-        
-        .pair-check {
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            color: transparent;
-        }
-        
-        .pair-row.selected .pair-check {
-            background: #00d4ff;
-            border-color: #00d4ff;
-            color: #000;
-        }
-        
-        .selected-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.06);
         }
         
         .sel-tag {
-            padding: 4px 8px;
-            background: rgba(0, 212, 255, 0.1);
-            border-radius: 5px;
-            font-size: 0.7rem;
+            padding: 5px 10px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 255, 136, 0.1));
+            border-radius: 6px;
+            font-size: 0.75rem;
             color: #00d4ff;
         }
         
@@ -261,59 +318,43 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 12px;
-            background: rgba(255,255,255,0.02);
-            border-radius: 8px;
+            padding: 12px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
             cursor: pointer;
             font-size: 0.85rem;
             color: #888;
+            margin-top: 10px;
         }
         
         .check-row input {
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             accent-color: #00d4ff;
         }
         
-        /* Notify Inputs */
-        .notify-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-        
-        .notify-input {
-            padding: 10px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 8px;
-            color: #fff;
-            font-size: 0.8rem;
-            font-family: inherit;
-        }
-        
-        .notify-input:focus {
-            outline: none;
-            border-color: #00d4ff;
-        }
-        
         /* Start Button */
+        .start-section {
+            text-align: center;
+            padding: 10px 0;
+        }
+        
         .start-btn {
-            width: 100%;
-            padding: 14px;
-            font-size: 1rem;
+            padding: 16px 50px;
+            font-size: 1.1rem;
             font-weight: 700;
             border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             cursor: pointer;
             background: linear-gradient(135deg, #00d4ff, #00ff88);
             color: #000;
             transition: all 0.3s;
-            margin-top: 10px;
+            box-shadow: 0 5px 30px rgba(0, 212, 255, 0.3);
         }
         
         .start-btn:hover {
-            box-shadow: 0 5px 25px rgba(0, 212, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 40px rgba(0, 212, 255, 0.4);
         }
         
         .start-btn:disabled {
@@ -321,188 +362,203 @@
             color: #444;
             cursor: not-allowed;
             box-shadow: none;
+            transform: none;
         }
         
         .start-btn.stop {
             background: linear-gradient(135deg, #ff4444, #ff6b6b);
+            box-shadow: 0 5px 30px rgba(255, 68, 68, 0.3);
         }
         
-        /* Main Content */
-        .main-content {
+        /* Signal Area */
+        .signal-area {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .signal-area.active { display: block; }
+        
+        .signal-card {
+            background: rgba(255,255,255,0.02);
+            border: 2px solid;
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .signal-card.buy { border-color: #00ff88; background: rgba(0, 255, 136, 0.05); }
+        .signal-card.sell { border-color: #ff4444; background: rgba(255, 68, 68, 0.05); }
+        
+        .signal-type { font-size: 1.8rem; font-weight: 800; margin-bottom: 5px; }
+        .signal-type.buy { color: #00ff88; }
+        .signal-type.sell { color: #ff4444; }
+        
+        .signal-pair { font-size: 1.1rem; margin-bottom: 15px; color: #aaa; }
+        
+        .signal-details {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .signal-item {
+            background: rgba(0,0,0,0.3);
+            padding: 10px 18px;
+            border-radius: 10px;
+        }
+        
+        .signal-label { font-size: 0.65rem; color: #555; margin-bottom: 3px; }
+        .signal-value { font-size: 0.95rem; font-weight: 700; }
+        
+        /* Waiting */
+        .waiting-area {
+            display: none;
+            text-align: center;
             padding: 30px;
-            background: radial-gradient(ellipse at top right, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
-                        radial-gradient(ellipse at bottom left, rgba(0, 255, 136, 0.02) 0%, transparent 50%);
+        }
+        
+        .waiting-area.active { display: block; }
+        
+        .waiting-icon { font-size: 2rem; margin-bottom: 10px; animation: bounce 1s infinite; }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        
+        .waiting-text { color: #555; font-size: 0.9rem; }
+        
+        /* Sidebar - Info Panel */
+        .sidebar {
+            background: linear-gradient(180deg, #0d0d14 0%, #0a0a0f 100%);
+            border-right: 1px solid rgba(255,255,255,0.06);
+            padding: 30px 25px;
+            overflow-y: auto;
+            max-height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+        
+        body.en .sidebar {
+            border-right: none;
+            border-left: 1px solid rgba(255,255,255,0.06);
         }
         
         @media (max-width: 1024px) {
-            .main-content { padding: 20px; }
+            .sidebar {
+                max-height: none;
+                position: relative;
+                border: none;
+                border-top: 1px solid rgba(255,255,255,0.06);
+            }
         }
         
-        /* Language Toggle */
-        .lang-toggle {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            display: flex;
-            gap: 5px;
-            background: rgba(255,255,255,0.03);
-            padding: 4px;
-            border-radius: 8px;
+        .sidebar-title {
+            font-size: 0.7rem;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-align: center;
         }
-        
-        body.en .lang-toggle {
-            left: auto;
-            right: 20px;
-        }
-        
-        .lang-btn {
-            padding: 6px 12px;
-            border: none;
-            background: transparent;
-            color: #555;
-            cursor: pointer;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            transition: all 0.2s;
-        }
-        
-        .lang-btn.active {
-            background: #00d4ff;
-            color: #000;
-        }
-        
-        /* Status */
-        .status-bar {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: rgba(0, 255, 136, 0.1);
-            border-radius: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: #00ff88;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        
-        .status-text { color: #00ff88; font-size: 0.85rem; }
         
         /* Info Cards */
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        
         .info-card {
             background: rgba(255,255,255,0.02);
             border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 16px;
-            padding: 24px;
-            transition: all 0.3s;
-        }
-        
-        .info-card:hover {
-            border-color: rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.03);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 15px;
         }
         
         .info-header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
+            gap: 10px;
+            margin-bottom: 14px;
         }
         
         .info-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
         }
         
         .info-icon.guide { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
         .info-icon.sources { background: linear-gradient(135deg, #0ea5e9, #38bdf8); }
         
-        .info-title { font-size: 1.1rem; font-weight: 700; }
-        .info-subtitle { font-size: 0.75rem; color: #555; margin-top: 2px; }
+        .info-title { font-size: 0.95rem; font-weight: 700; }
+        .info-subtitle { font-size: 0.7rem; color: #555; margin-top: 2px; }
         
         /* Steps */
         .steps-list {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
         }
         
         .step-item {
             display: flex;
-            gap: 14px;
+            gap: 12px;
         }
         
         .step-num {
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             background: linear-gradient(135deg, #00d4ff, #00ff88);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: 700;
             color: #000;
             flex-shrink: 0;
         }
         
         .step-content { flex: 1; }
-        .step-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
-        .step-desc { font-size: 0.8rem; color: #666; line-height: 1.5; }
+        .step-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 3px; }
+        .step-desc { font-size: 0.75rem; color: #555; line-height: 1.5; }
         
         .step-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            margin-top: 8px;
+            display: inline-block;
+            margin-top: 6px;
             color: #00d4ff;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-decoration: none;
         }
         
         .step-link:hover { text-decoration: underline; }
         
-        /* Sources Grid */
-        .sources-list {
+        /* Sources */
+        .sources-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
         }
         
         .source-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px;
+            gap: 8px;
+            padding: 10px;
             background: rgba(0,0,0,0.2);
-            border-radius: 10px;
+            border-radius: 8px;
         }
         
         .source-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: 700;
         }
         
@@ -511,297 +567,263 @@
         .source-icon.ai { background: linear-gradient(135deg, #00d4ff, #00ff88); }
         .source-icon.live { background: linear-gradient(135deg, #f97316, #fb923c); }
         
-        .source-name { font-size: 0.85rem; font-weight: 600; }
-        .source-desc { font-size: 0.7rem; color: #555; }
+        .source-name { font-size: 0.75rem; font-weight: 600; }
+        .source-desc { font-size: 0.65rem; color: #555; }
         
         .disclaimer {
-            margin-top: 16px;
+            margin-top: 15px;
             padding: 12px;
             background: rgba(251, 191, 36, 0.05);
             border: 1px solid rgba(251, 191, 36, 0.1);
             border-radius: 10px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #a8a29e;
             text-align: center;
+            line-height: 1.5;
         }
         
-        /* Signal Card */
-        .signal-area {
-            margin-top: 30px;
-            display: none;
-        }
-        
-        .signal-area.active { display: block; }
-        
-        .signal-card {
-            background: rgba(255,255,255,0.02);
-            border: 2px solid;
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        .signal-card.buy { border-color: #00ff88; background: rgba(0, 255, 136, 0.05); }
-        .signal-card.sell { border-color: #ff4444; background: rgba(255, 68, 68, 0.05); }
-        
-        .signal-type { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
-        .signal-type.buy { color: #00ff88; }
-        .signal-type.sell { color: #ff4444; }
-        
-        .signal-pair { font-size: 1.2rem; margin-bottom: 20px; }
-        
-        .signal-details {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .signal-item {
-            background: rgba(0,0,0,0.3);
-            padding: 12px 20px;
-            border-radius: 10px;
-            min-width: 90px;
-        }
-        
-        .signal-label { font-size: 0.7rem; color: #666; margin-bottom: 4px; }
-        .signal-value { font-size: 1rem; font-weight: 700; }
-        
-        /* Waiting */
-        .waiting-area {
-            margin-top: 30px;
-            text-align: center;
-            padding: 40px;
-            display: none;
-        }
-        
-        .waiting-area.active { display: block; }
-        
-        .waiting-icon { font-size: 2.5rem; margin-bottom: 15px; animation: bounce 1s infinite; }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-        
-        .waiting-text { color: #555; font-size: 1rem; }
-        
-        /* Footer */
         .footer {
-            margin-top: 40px;
             text-align: center;
             color: #333;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="app-layout">
-        <!-- Sidebar - Control Panel -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">Aziz Forex</div>
-                <div class="logo-sub" data-ar="لوحة التحكم" data-en="Control Panel"></div>
-            </div>
-            
-            <!-- AI -->
-            <div class="panel-section">
-                <div class="panel-title" data-ar="الذكاء الاصطناعي" data-en="AI MODEL"></div>
-                <div class="form-group">
-                    <select class="form-select" id="aiType">
-                        <option value="openai">OpenAI (GPT-4)</option>
-                        <option value="anthropic">Claude</option>
-                        <option value="google">Gemini</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-input" id="apiKey" placeholder="API Key (sk-...)">
-                    <div class="form-hint" data-ar="🔒 يُحفظ محلياً فقط" data-en="🔒 Stored locally"></div>
-                </div>
-            </div>
-            
-            <!-- Timeframe -->
-            <div class="panel-section">
-                <div class="panel-title" data-ar="الإطار الزمني" data-en="TIMEFRAME"></div>
-                <div class="timeframe-chips" id="timeframeChips">
-                    <div class="tf-chip" data-tf="1m">1m</div>
-                    <div class="tf-chip" data-tf="5m">5m</div>
-                    <div class="tf-chip" data-tf="15m" >15m</div>
-                    <div class="tf-chip active" data-tf="1h">1H</div>
-                    <div class="tf-chip" data-tf="4h">4H</div>
-                    <div class="tf-chip" data-tf="1d">1D</div>
-                </div>
-            </div>
-            
-            <!-- Pairs -->
-            <div class="panel-section">
-                <div class="panel-title" data-ar="الأزواج" data-en="PAIRS"></div>
-                <div class="cat-mini" id="catMini"></div>
-                <div class="pairs-dropdown" id="pairsDropdown"></div>
-                <div class="selected-tags" id="selectedTags"></div>
-            </div>
-            
-            <!-- Strategy -->
-            <div class="panel-section">
-                <div class="panel-title" data-ar="الاستراتيجية" data-en="STRATEGY"></div>
-                <div class="form-group">
-                    <select class="form-select" id="strategy">
-                        <option value="rsi" data-ar="RSI - ذروة البيع/الشراء" data-en="RSI - Overbought/Oversold">RSI</option>
-                        <option value="trend" data-ar="Trend - تتبع الاتجاه" data-en="Trend Following">Trend</option>
-                        <option value="breakout" data-ar="Breakout - كسر المستويات" data-en="Breakout">Breakout</option>
-                        <option value="scalping" data-ar="Scalping - مضاربة سريعة" data-en="Scalping">Scalping</option>
-                        <option value="swing" data-ar="Swing - تداول متأرجح" data-en="Swing Trading">Swing</option>
-                        <option value="price_action" data-ar="Price Action" data-en="Price Action">Price Action</option>
-                        <option value="smart_money" data-ar="Smart Money" data-en="Smart Money">Smart Money</option>
-                        <option value="supply_demand" data-ar="Supply/Demand" data-en="Supply/Demand">Supply/Demand</option>
-                    </select>
-                </div>
-                <label class="check-row">
-                    <input type="checkbox" id="useChart" checked>
-                    <span data-ar="تحليل بصري للشارت" data-en="Visual chart analysis"></span>
-                </label>
-            </div>
-            
-            <!-- Notifications -->
-            <div class="panel-section">
-                <div class="panel-title" data-ar="الإشعارات" data-en="NOTIFICATIONS"></div>
-                <div class="notify-row">
-                    <input type="text" class="notify-input" id="ntfyChannel" placeholder="Ntfy">
-                    <input type="text" class="notify-input" id="telegramChat" placeholder="TG Chat ID">
-                </div>
-                <input type="password" class="notify-input" id="telegramToken" placeholder="Telegram Bot Token" style="width: 100%; margin-top: 8px;">
-            </div>
-            
-            <!-- Start -->
-            <button class="start-btn" id="startBtn" onclick="toggleMonitoring()" disabled data-ar="ابدأ المراقبة" data-en="Start Monitoring"></button>
-        </aside>
-        
-        <!-- Main Content -->
+        <!-- Main Content - Control Panel -->
         <main class="main-content">
-            <div class="lang-toggle">
-                <button class="lang-btn active" onclick="setLang('ar')">ع</button>
-                <button class="lang-btn" onclick="setLang('en')">EN</button>
+            <div class="header">
+                <div class="logo-area">
+                    <div class="logo">Aziz Forex</div>
+                    <div class="status-badge">
+                        <div class="status-dot"></div>
+                        <span class="status-text" id="statusText" data-ar="جاهز" data-en="Ready"></span>
+                    </div>
+                </div>
+                <div class="lang-toggle">
+                    <button class="lang-btn active" onclick="setLang('ar')">ع</button>
+                    <button class="lang-btn" onclick="setLang('en')">EN</button>
+                </div>
             </div>
             
-            <div class="status-bar">
-                <div class="status-dot"></div>
-                <span class="status-text" id="statusText" data-ar="جاهز للمراقبة" data-en="Ready"></span>
-            </div>
-            
-            <div class="info-grid">
-                <!-- Guide Card -->
-                <div class="info-card">
-                    <div class="info-header">
-                        <div class="info-icon guide">📋</div>
-                        <div>
-                            <div class="info-title" data-ar="كيف تبدأ؟" data-en="How to Start?"></div>
-                            <div class="info-subtitle" data-ar="خطوات الإعداد" data-en="Setup guide"></div>
+            <div class="control-panel">
+                <!-- AI + API -->
+                <div class="ctrl-section">
+                    <div class="section-title">
+                        <div class="section-title-icon ai">🤖</div>
+                        <span data-ar="الذكاء الاصطناعي" data-en="AI Model"></span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" data-ar="النموذج" data-en="Model"></label>
+                            <select class="form-select" id="aiType">
+                                <option value="openai">OpenAI (GPT-4)</option>
+                                <option value="anthropic">Claude</option>
+                                <option value="google">Gemini</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-ar="مفتاح API" data-en="API Key"></label>
+                            <input type="password" class="form-input" id="apiKey" placeholder="sk-...">
                         </div>
                     </div>
-                    <div class="steps-list">
-                        <div class="step-item">
-                            <div class="step-num">1</div>
-                            <div class="step-content">
-                                <div class="step-title" data-ar="احصل على مفتاح API" data-en="Get API Key"></div>
-                                <div class="step-desc" data-ar="سجّل في OpenAI واحصل على مفتاحك. يُحفظ في جهازك فقط." data-en="Sign up at OpenAI and get your key. Stored only on your device."></div>
-                                <a href="https://platform.openai.com/api-keys" target="_blank" class="step-link">OpenAI ↗</a>
-                            </div>
+                    <div class="form-hint" data-ar="🔒 المفتاح يُحفظ في جهازك فقط ولا يُرسل لأي خادم" data-en="🔒 Key stored locally only, never sent to any server"></div>
+                </div>
+                
+                <!-- Timeframe -->
+                <div class="ctrl-section">
+                    <div class="section-title">
+                        <div class="section-title-icon tf">⏱</div>
+                        <span data-ar="الإطار الزمني" data-en="Timeframe"></span>
+                    </div>
+                    <div class="timeframe-chips" id="timeframeChips">
+                        <div class="tf-chip" data-tf="1m">1m</div>
+                        <div class="tf-chip" data-tf="5m">5m</div>
+                        <div class="tf-chip" data-tf="15m">15m</div>
+                        <div class="tf-chip active" data-tf="1h">1H</div>
+                        <div class="tf-chip" data-tf="4h">4H</div>
+                        <div class="tf-chip" data-tf="1d">1D</div>
+                    </div>
+                </div>
+                
+                <!-- Pairs -->
+                <div class="ctrl-section">
+                    <div class="section-title">
+                        <div class="section-title-icon pairs">💱</div>
+                        <span data-ar="الأزواج" data-en="Trading Pairs"></span>
+                    </div>
+                    <div class="cat-tabs" id="catTabs"></div>
+                    <div class="pairs-grid" id="pairsGrid"></div>
+                    <div class="selected-pairs" id="selectedPairs"></div>
+                </div>
+                
+                <!-- Strategy + Notifications -->
+                <div class="ctrl-section">
+                    <div class="section-title">
+                        <div class="section-title-icon strategy">📈</div>
+                        <span data-ar="الاستراتيجية والإشعارات" data-en="Strategy & Notifications"></span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" data-ar="الاستراتيجية" data-en="Strategy"></label>
+                            <select class="form-select" id="strategy">
+                                <option value="rsi" data-ar="RSI - ذروة البيع/الشراء" data-en="RSI">RSI</option>
+                                <option value="trend" data-ar="Trend - تتبع الاتجاه" data-en="Trend Following">Trend</option>
+                                <option value="breakout" data-ar="Breakout - كسر المستويات" data-en="Breakout">Breakout</option>
+                                <option value="scalping" data-ar="Scalping - مضاربة سريعة" data-en="Scalping">Scalping</option>
+                                <option value="swing" data-ar="Swing - متأرجح" data-en="Swing">Swing</option>
+                                <option value="price_action" data-ar="Price Action" data-en="Price Action">Price Action</option>
+                                <option value="smart_money" data-ar="Smart Money" data-en="Smart Money">Smart Money</option>
+                                <option value="supply_demand" data-ar="Supply/Demand" data-en="Supply/Demand">Supply/Demand</option>
+                            </select>
                         </div>
-                        <div class="step-item">
-                            <div class="step-num">2</div>
-                            <div class="step-content">
-                                <div class="step-title" data-ar="فعّل الإشعارات" data-en="Enable Notifications"></div>
-                                <div class="step-desc" data-ar="حمّل Ntfy أو أنشئ بوت تلجرام لاستقبال التوصيات." data-en="Download Ntfy or create a Telegram bot to receive signals."></div>
-                                <a href="https://ntfy.sh" target="_blank" class="step-link">Ntfy ↗</a>
-                            </div>
+                        <div class="form-group">
+                            <label class="form-label">Ntfy</label>
+                            <input type="text" class="form-input" id="ntfyChannel" placeholder="my-alerts">
                         </div>
-                        <div class="step-item">
-                            <div class="step-num">3</div>
-                            <div class="step-content">
-                                <div class="step-title" data-ar="اختر وابدأ" data-en="Select & Start"></div>
-                                <div class="step-desc" data-ar="اختر الأزواج والإطار الزمني والاستراتيجية، ثم اضغط ابدأ." data-en="Select pairs, timeframe, strategy, then click Start."></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Telegram Chat ID</label>
+                            <input type="text" class="form-input" id="telegramChat" placeholder="123456789">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Telegram Bot Token</label>
+                            <input type="password" class="form-input" id="telegramToken" placeholder="123:ABC...">
+                        </div>
+                    </div>
+                    <label class="check-row">
+                        <input type="checkbox" id="useChart" checked>
+                        <span data-ar="تحليل بصري للشارت (موصى به)" data-en="Visual chart analysis (recommended)"></span>
+                    </label>
+                </div>
+                
+                <!-- Start -->
+                <div class="start-section">
+                    <button class="start-btn" id="startBtn" onclick="toggleMonitoring()" disabled data-ar="ابدأ المراقبة" data-en="Start Monitoring"></button>
+                </div>
+                
+                <!-- Signal -->
+                <div class="signal-area" id="signalArea">
+                    <div class="signal-card" id="signalCard">
+                        <div class="signal-type" id="signalType">🟢 BUY</div>
+                        <div class="signal-pair" id="signalPair">BTC/USD</div>
+                        <div class="signal-details">
+                            <div class="signal-item">
+                                <div class="signal-label" data-ar="الدخول" data-en="Entry"></div>
+                                <div class="signal-value" id="entryPrice">--</div>
+                            </div>
+                            <div class="signal-item">
+                                <div class="signal-label" data-ar="وقف" data-en="SL"></div>
+                                <div class="signal-value" id="slPrice">--</div>
+                            </div>
+                            <div class="signal-item">
+                                <div class="signal-label" data-ar="هدف" data-en="TP"></div>
+                                <div class="signal-value" id="tpPrice">--</div>
+                            </div>
+                            <div class="signal-item">
+                                <div class="signal-label" data-ar="لوت" data-en="Lot"></div>
+                                <div class="signal-value" id="lotSize">0.01</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Sources Card -->
-                <div class="info-card">
-                    <div class="info-header">
-                        <div class="info-icon sources">📡</div>
+                <!-- Waiting -->
+                <div class="waiting-area" id="waitingArea">
+                    <div class="waiting-icon">🔍</div>
+                    <div class="waiting-text" data-ar="يحلل السوق..." data-en="Analyzing..."></div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Sidebar - Info Panel -->
+        <aside class="sidebar">
+            <div class="sidebar-title" data-ar="معلومات" data-en="INFORMATION"></div>
+            
+            <!-- Guide -->
+            <div class="info-card">
+                <div class="info-header">
+                    <div class="info-icon guide">📋</div>
+                    <div>
+                        <div class="info-title" data-ar="كيف تبدأ؟" data-en="How to Start?"></div>
+                        <div class="info-subtitle" data-ar="خطوات الإعداد" data-en="Setup guide"></div>
+                    </div>
+                </div>
+                <div class="steps-list">
+                    <div class="step-item">
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <div class="step-title" data-ar="احصل على مفتاح API" data-en="Get API Key"></div>
+                            <div class="step-desc" data-ar="سجّل في OpenAI أو Claude واحصل على مفتاحك الخاص." data-en="Sign up at OpenAI or Claude and get your API key."></div>
+                            <a href="https://platform.openai.com/api-keys" target="_blank" class="step-link">OpenAI ↗</a>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <div class="step-title" data-ar="فعّل الإشعارات" data-en="Enable Notifications"></div>
+                            <div class="step-desc" data-ar="حمّل تطبيق Ntfy أو أنشئ بوت تلجرام لاستقبال التوصيات على جوالك." data-en="Download Ntfy app or create Telegram bot to receive signals."></div>
+                            <a href="https://ntfy.sh" target="_blank" class="step-link">Ntfy ↗</a>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-num">3</div>
+                        <div class="step-content">
+                            <div class="step-title" data-ar="اختر وابدأ" data-en="Select & Start"></div>
+                            <div class="step-desc" data-ar="اختر الأزواج والإطار الزمني والاستراتيجية، ثم اضغط ابدأ المراقبة." data-en="Select pairs, timeframe, strategy, then click Start."></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sources -->
+            <div class="info-card">
+                <div class="info-header">
+                    <div class="info-icon sources">📡</div>
+                    <div>
+                        <div class="info-title" data-ar="مصادر البيانات" data-en="Data Sources"></div>
+                        <div class="info-subtitle" data-ar="من أين نجلب المعلومات" data-en="Where we get data"></div>
+                    </div>
+                </div>
+                <div class="sources-grid">
+                    <div class="source-item">
+                        <div class="source-icon yahoo">Y!</div>
                         <div>
-                            <div class="info-title" data-ar="مصادر البيانات" data-en="Data Sources"></div>
-                            <div class="info-subtitle" data-ar="من أين نجلب المعلومات" data-en="Where we get data"></div>
+                            <div class="source-name">Yahoo Finance</div>
+                            <div class="source-desc" data-ar="أسعار حية" data-en="Live prices"></div>
                         </div>
                     </div>
-                    <div class="sources-list">
-                        <div class="source-item">
-                            <div class="source-icon yahoo">Y!</div>
-                            <div>
-                                <div class="source-name">Yahoo Finance</div>
-                                <div class="source-desc" data-ar="أسعار حية" data-en="Live prices"></div>
-                            </div>
-                        </div>
-                        <div class="source-item">
-                            <div class="source-icon tv">📈</div>
-                            <div>
-                                <div class="source-name">TradingView</div>
-                                <div class="source-desc" data-ar="صور الشارت" data-en="Chart images"></div>
-                            </div>
-                        </div>
-                        <div class="source-item">
-                            <div class="source-icon ai">🧠</div>
-                            <div>
-                                <div class="source-name" data-ar="ذكاء اصطناعي" data-en="AI Models"></div>
-                                <div class="source-desc">GPT-4 / Claude</div>
-                            </div>
-                        </div>
-                        <div class="source-item">
-                            <div class="source-icon live">⏱</div>
-                            <div>
-                                <div class="source-name" data-ar="تحديث" data-en="Updates"></div>
-                                <div class="source-desc" data-ar="كل دقيقتين" data-en="Every 2 min"></div>
-                            </div>
+                    <div class="source-item">
+                        <div class="source-icon tv">📈</div>
+                        <div>
+                            <div class="source-name">TradingView</div>
+                            <div class="source-desc" data-ar="صور الشارت" data-en="Charts"></div>
                         </div>
                     </div>
-                    <div class="disclaimer" data-ar="⚠️ التوصيات تعليمية فقط. قراراتك مسؤوليتك." data-en="⚠️ Signals are educational only. Trade at your own risk."></div>
-                </div>
-            </div>
-            
-            <!-- Signal Area -->
-            <div class="signal-area" id="signalArea">
-                <div class="signal-card" id="signalCard">
-                    <div class="signal-type" id="signalType">🟢 BUY</div>
-                    <div class="signal-pair" id="signalPair">BTC/USD</div>
-                    <div class="signal-details">
-                        <div class="signal-item">
-                            <div class="signal-label" data-ar="الدخول" data-en="Entry"></div>
-                            <div class="signal-value" id="entryPrice">--</div>
+                    <div class="source-item">
+                        <div class="source-icon ai">🧠</div>
+                        <div>
+                            <div class="source-name" data-ar="ذكاء اصطناعي" data-en="AI"></div>
+                            <div class="source-desc">GPT-4 / Claude</div>
                         </div>
-                        <div class="signal-item">
-                            <div class="signal-label" data-ar="وقف" data-en="SL"></div>
-                            <div class="signal-value" id="slPrice">--</div>
-                        </div>
-                        <div class="signal-item">
-                            <div class="signal-label" data-ar="هدف" data-en="TP"></div>
-                            <div class="signal-value" id="tpPrice">--</div>
-                        </div>
-                        <div class="signal-item">
-                            <div class="signal-label" data-ar="لوت" data-en="Lot"></div>
-                            <div class="signal-value" id="lotSize">0.01</div>
+                    </div>
+                    <div class="source-item">
+                        <div class="source-icon live">⏱</div>
+                        <div>
+                            <div class="source-name" data-ar="تحديث" data-en="Update"></div>
+                            <div class="source-desc" data-ar="كل دقيقتين" data-en="Every 2 min"></div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Waiting Area -->
-            <div class="waiting-area" id="waitingArea">
-                <div class="waiting-icon">🔍</div>
-                <div class="waiting-text" data-ar="يحلل السوق..." data-en="Analyzing market..."></div>
-            </div>
+            <div class="disclaimer" data-ar="⚠️ التوصيات للأغراض التعليمية فقط ولا تمثل نصيحة مالية. قرارات التداول مسؤوليتك الشخصية." data-en="⚠️ Signals are for educational purposes only. Trading decisions are your own responsibility."></div>
             
             <div class="footer">Aziz Forex © 2024</div>
-        </main>
+        </aside>
     </div>
     
     <script>
@@ -819,20 +841,24 @@
                 { symbol: 'BNB-USD', name: 'BNB/USD', label: { ar: 'باينانس', en: 'BNB' } },
                 { symbol: 'SOL-USD', name: 'SOL/USD', label: { ar: 'سولانا', en: 'Solana' } },
                 { symbol: 'XRP-USD', name: 'XRP/USD', label: { ar: 'ريبل', en: 'XRP' } },
+                { symbol: 'DOGE-USD', name: 'DOGE/USD', label: { ar: 'دوج', en: 'DOGE' } },
             ]},
             forex: { icon: '💵', name: { ar: 'فوركس', en: 'Forex' }, pairs: [
                 { symbol: 'EURUSD=X', name: 'EUR/USD', label: { ar: 'يورو/دولار', en: 'EUR/USD' } },
-                { symbol: 'GBPUSD=X', name: 'GBP/USD', label: { ar: 'باوند', en: 'GBP/USD' } },
-                { symbol: 'USDJPY=X', name: 'USD/JPY', label: { ar: 'ين', en: 'USD/JPY' } },
+                { symbol: 'GBPUSD=X', name: 'GBP/USD', label: { ar: 'باوند/دولار', en: 'GBP/USD' } },
+                { symbol: 'USDJPY=X', name: 'USD/JPY', label: { ar: 'دولار/ين', en: 'USD/JPY' } },
                 { symbol: 'AUDUSD=X', name: 'AUD/USD', label: { ar: 'استرالي', en: 'AUD/USD' } },
+                { symbol: 'USDCAD=X', name: 'USD/CAD', label: { ar: 'كندي', en: 'USD/CAD' } },
             ]},
             metals: { icon: '🥇', name: { ar: 'معادن', en: 'Metals' }, pairs: [
                 { symbol: 'GC=F', name: 'XAU/USD', label: { ar: 'ذهب', en: 'Gold' } },
                 { symbol: 'SI=F', name: 'XAG/USD', label: { ar: 'فضة', en: 'Silver' } },
+                { symbol: 'PL=F', name: 'XPT/USD', label: { ar: 'بلاتين', en: 'Platinum' } },
             ]},
             indices: { icon: '📊', name: { ar: 'مؤشرات', en: 'Indices' }, pairs: [
-                { symbol: '^GSPC', name: 'S&P 500', label: { ar: 'S&P', en: 'S&P 500' } },
-                { symbol: '^DJI', name: 'Dow', label: { ar: 'داو', en: 'Dow Jones' } },
+                { symbol: '^GSPC', name: 'S&P 500', label: { ar: 'S&P 500', en: 'S&P 500' } },
+                { symbol: '^DJI', name: 'Dow Jones', label: { ar: 'داو جونز', en: 'Dow Jones' } },
+                { symbol: '^IXIC', name: 'NASDAQ', label: { ar: 'ناسداك', en: 'NASDAQ' } },
             ]}
         };
         
@@ -854,8 +880,8 @@
                 if (opt.dataset.ar) opt.textContent = opt.getAttribute(`data-${lang}`);
             });
             
-            buildCatMini();
-            updateSelectedTags();
+            buildCatTabs();
+            updateSelectedPairs();
         }
         
         // Timeframe
@@ -868,65 +894,72 @@
             });
         });
         
-        function buildCatMini() {
-            const container = document.getElementById('catMini');
+        function buildCatTabs() {
+            const container = document.getElementById('catTabs');
             container.innerHTML = '';
             
             for (const [catId, cat] of Object.entries(categoriesData)) {
-                const btn = document.createElement('div');
-                btn.className = `cat-btn${activeCategory === catId ? ' active' : ''}`;
-                btn.textContent = `${cat.icon} ${cat.name[currentLang]}`;
-                btn.onclick = () => toggleCat(catId);
-                container.appendChild(btn);
+                const tab = document.createElement('div');
+                tab.className = `cat-tab${activeCategory === catId ? ' active' : ''}`;
+                tab.textContent = `${cat.icon} ${cat.name[currentLang]}`;
+                tab.onclick = () => toggleCat(catId);
+                container.appendChild(tab);
             }
         }
         
         function toggleCat(catId) {
+            const grid = document.getElementById('pairsGrid');
+            
             if (activeCategory === catId) {
                 activeCategory = null;
-                document.getElementById('pairsDropdown').classList.remove('active');
+                grid.classList.remove('active');
             } else {
                 activeCategory = catId;
-                buildPairsDropdown(catId);
-                document.getElementById('pairsDropdown').classList.add('active');
+                buildPairsGrid(catId);
+                grid.classList.add('active');
             }
-            buildCatMini();
+            buildCatTabs();
         }
         
-        function buildPairsDropdown(catId) {
-            const container = document.getElementById('pairsDropdown');
+        function buildPairsGrid(catId) {
+            const container = document.getElementById('pairsGrid');
             container.innerHTML = '';
             
             const cat = categoriesData[catId];
             cat.pairs.forEach(pair => {
                 const isSelected = selectedPairs.some(p => p.symbol === pair.symbol);
-                const row = document.createElement('div');
-                row.className = `pair-row${isSelected ? ' selected' : ''}`;
-                row.innerHTML = `<div class="pair-check">✓</div><span>${pair.name}</span>`;
-                row.onclick = () => togglePair(pair, row);
-                container.appendChild(row);
+                const chip = document.createElement('div');
+                chip.className = `pair-chip${isSelected ? ' selected' : ''}`;
+                chip.textContent = pair.name;
+                chip.onclick = () => togglePair(pair, chip);
+                container.appendChild(chip);
             });
         }
         
-        function togglePair(pair, row) {
+        function togglePair(pair, chip) {
             const idx = selectedPairs.findIndex(p => p.symbol === pair.symbol);
             
             if (idx > -1) {
-                row.classList.remove('selected');
+                chip.classList.remove('selected');
                 selectedPairs.splice(idx, 1);
             } else {
-                row.classList.add('selected');
+                chip.classList.add('selected');
                 selectedPairs.push({ symbol: pair.symbol, name: pair.name, label: pair.label[currentLang] });
             }
             
-            updateSelectedTags();
+            updateSelectedPairs();
             updateStartBtn();
             saveSettings();
         }
         
-        function updateSelectedTags() {
-            const container = document.getElementById('selectedTags');
-            container.innerHTML = selectedPairs.map(p => `<span class="sel-tag">${p.name}</span>`).join('');
+        function updateSelectedPairs() {
+            const container = document.getElementById('selectedPairs');
+            if (selectedPairs.length > 0) {
+                container.innerHTML = selectedPairs.map(p => `<span class="sel-tag">${p.name}</span>`).join('');
+                container.style.display = 'flex';
+            } else {
+                container.style.display = 'none';
+            }
         }
         
         function updateStartBtn() {
@@ -954,13 +987,12 @@
             document.getElementById('telegramToken').value = localStorage.getItem('telegramToken') || '';
             document.getElementById('useChart').checked = localStorage.getItem('useChart') !== 'false';
             
-            // Timeframe
             document.querySelectorAll('.tf-chip').forEach(c => {
                 c.classList.toggle('active', c.dataset.tf === selectedTimeframe);
             });
             
-            buildCatMini();
-            updateSelectedTags();
+            buildCatTabs();
+            updateSelectedPairs();
             updateStartBtn();
         }
         
@@ -980,10 +1012,10 @@
         function startMonitoring() {
             isMonitoring = true;
             const btn = document.getElementById('startBtn');
-            btn.textContent = currentLang === 'ar' ? 'إيقاف' : 'Stop';
+            btn.textContent = currentLang === 'ar' ? 'إيقاف المراقبة' : 'Stop Monitoring';
             btn.classList.add('stop');
             
-            document.getElementById('statusText').textContent = currentLang === 'ar' ? `يراقب ${selectedPairs.length} زوج` : `Watching ${selectedPairs.length}`;
+            document.getElementById('statusText').textContent = currentLang === 'ar' ? `يراقب ${selectedPairs.length}` : `Watching ${selectedPairs.length}`;
             document.getElementById('waitingArea').classList.add('active');
             document.getElementById('signalArea').classList.remove('active');
             
@@ -994,7 +1026,7 @@
         function stopMonitoring() {
             isMonitoring = false;
             const btn = document.getElementById('startBtn');
-            btn.textContent = currentLang === 'ar' ? 'ابدأ المراقبة' : 'Start';
+            btn.textContent = currentLang === 'ar' ? 'ابدأ المراقبة' : 'Start Monitoring';
             btn.classList.remove('stop');
             
             document.getElementById('statusText').textContent = currentLang === 'ar' ? 'جاهز' : 'Ready';
