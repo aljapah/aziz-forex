@@ -211,6 +211,28 @@
         
         .form-hint { font-size: 0.7rem; color: #444; margin-top: 5px; }
         
+        .key-status {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .key-status.error {
+            display: block;
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            color: #ff6b6b;
+        }
+        
+        .key-status.success {
+            display: block;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: #00ff88;
+        }
+        
         /* Timeframe Chips */
         .timeframe-chips {
             display: flex;
@@ -615,21 +637,23 @@
                         <div class="section-title-icon ai">🤖</div>
                         <span data-ar="الذكاء الاصطناعي" data-en="AI Model"></span>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label" data-ar="النموذج" data-en="Model"></label>
-                            <select class="form-select" id="aiType">
-                                <option value="openai">OpenAI (GPT-4)</option>
-                                <option value="anthropic">Claude</option>
-                                <option value="google">Gemini</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" data-ar="مفتاح API" data-en="API Key"></label>
-                            <input type="password" class="form-input" id="apiKey" placeholder="sk-...">
+                    <div class="form-group">
+                        <label class="form-label" data-ar="النموذج" data-en="Model"></label>
+                        <select class="form-select" id="aiType" onchange="onAiTypeChange()">
+                            <option value="openai">OpenAI (GPT-4)</option>
+                            <option value="anthropic">Claude</option>
+                            <option value="google">Gemini</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="keyGroup">
+                        <label class="form-label" id="keyLabel">OpenAI API Key</label>
+                        <input type="password" class="form-input" id="apiKey" placeholder="sk-...">
+                        <div class="form-hint" id="keyHint">
+                            <span data-ar="احصل على المفتاح من" data-en="Get key from"></span>
+                            <a href="https://platform.openai.com/api-keys" target="_blank" id="keyLink" style="color: #00d4ff; margin-right: 5px;">platform.openai.com</a>
                         </div>
                     </div>
-                    <div class="form-hint" data-ar="🔒 المفتاح يُحفظ في جهازك فقط ولا يُرسل لأي خادم" data-en="🔒 Key stored locally only, never sent to any server"></div>
+                    <div class="key-status" id="keyStatus"></div>
                 </div>
                 
                 <!-- Timeframe -->
@@ -834,6 +858,76 @@
         let isMonitoring = false;
         let monitorInterval = null;
         
+        const aiConfig = {
+            openai: {
+                label: 'OpenAI API Key',
+                placeholder: 'sk-...',
+                link: 'https://platform.openai.com/api-keys',
+                linkText: 'platform.openai.com',
+                prefix: 'sk-',
+                storageKey: 'apiKey_openai'
+            },
+            anthropic: {
+                label: 'Claude API Key',
+                placeholder: 'sk-ant-...',
+                link: 'https://console.anthropic.com/settings/keys',
+                linkText: 'console.anthropic.com',
+                prefix: 'sk-ant-',
+                storageKey: 'apiKey_anthropic'
+            },
+            google: {
+                label: 'Gemini API Key',
+                placeholder: 'AIza...',
+                link: 'https://aistudio.google.com/app/apikey',
+                linkText: 'aistudio.google.com',
+                prefix: 'AIza',
+                storageKey: 'apiKey_google'
+            }
+        };
+        
+        function onAiTypeChange() {
+            const aiType = document.getElementById('aiType').value;
+            const config = aiConfig[aiType];
+            
+            // Update UI
+            document.getElementById('keyLabel').textContent = config.label;
+            document.getElementById('apiKey').placeholder = config.placeholder;
+            document.getElementById('keyLink').href = config.link;
+            document.getElementById('keyLink').textContent = config.linkText;
+            
+            // Load saved key for this AI type
+            const savedKey = localStorage.getItem(config.storageKey) || '';
+            document.getElementById('apiKey').value = savedKey;
+            
+            validateKey();
+            saveSettings();
+        }
+        
+        function validateKey() {
+            const aiType = document.getElementById('aiType').value;
+            const config = aiConfig[aiType];
+            const key = document.getElementById('apiKey').value.trim();
+            const status = document.getElementById('keyStatus');
+            
+            if (!key) {
+                status.className = 'key-status error';
+                status.textContent = currentLang === 'ar' ? '⚠️ أدخل مفتاح API' : '⚠️ Enter API key';
+                return false;
+            }
+            
+            if (!key.startsWith(config.prefix)) {
+                status.className = 'key-status error';
+                status.textContent = currentLang === 'ar' 
+                    ? `⚠️ المفتاح يجب أن يبدأ بـ ${config.prefix}` 
+                    : `⚠️ Key must start with ${config.prefix}`;
+                return false;
+            }
+            
+            status.className = 'key-status success';
+            status.textContent = currentLang === 'ar' ? '✓ المفتاح صحيح' : '✓ Key format valid';
+            return true;
+        }
+        
         const categoriesData = {
             crypto: { icon: '💰', name: { ar: 'كريبتو', en: 'Crypto' }, pairs: [
                 { symbol: 'BTC-USD', name: 'BTC/USD', label: { ar: 'بيتكوين', en: 'Bitcoin' } },
@@ -963,13 +1057,16 @@
         }
         
         function updateStartBtn() {
-            const apiKey = document.getElementById('apiKey').value;
-            document.getElementById('startBtn').disabled = !apiKey || selectedPairs.length === 0;
+            const isKeyValid = validateKey();
+            document.getElementById('startBtn').disabled = !isKeyValid || selectedPairs.length === 0;
         }
         
         function saveSettings() {
-            localStorage.setItem('aiType', document.getElementById('aiType').value);
-            localStorage.setItem('apiKey', document.getElementById('apiKey').value);
+            const aiType = document.getElementById('aiType').value;
+            const config = aiConfig[aiType];
+            
+            localStorage.setItem('aiType', aiType);
+            localStorage.setItem(config.storageKey, document.getElementById('apiKey').value);
             localStorage.setItem('strategy', document.getElementById('strategy').value);
             localStorage.setItem('ntfyChannel', document.getElementById('ntfyChannel').value);
             localStorage.setItem('telegramChat', document.getElementById('telegramChat').value);
@@ -979,8 +1076,17 @@
         }
         
         function loadSettings() {
-            document.getElementById('aiType').value = localStorage.getItem('aiType') || 'openai';
-            document.getElementById('apiKey').value = localStorage.getItem('apiKey') || '';
+            const aiType = localStorage.getItem('aiType') || 'openai';
+            document.getElementById('aiType').value = aiType;
+            
+            // Load correct key for selected AI type
+            const config = aiConfig[aiType];
+            document.getElementById('keyLabel').textContent = config.label;
+            document.getElementById('apiKey').placeholder = config.placeholder;
+            document.getElementById('keyLink').href = config.link;
+            document.getElementById('keyLink').textContent = config.linkText;
+            document.getElementById('apiKey').value = localStorage.getItem(config.storageKey) || '';
+            
             document.getElementById('strategy').value = localStorage.getItem('strategy') || 'rsi';
             document.getElementById('ntfyChannel').value = localStorage.getItem('ntfyChannel') || '';
             document.getElementById('telegramChat').value = localStorage.getItem('telegramChat') || '';
@@ -993,10 +1099,11 @@
             
             buildCatTabs();
             updateSelectedPairs();
+            validateKey();
             updateStartBtn();
         }
         
-        document.getElementById('apiKey').addEventListener('input', () => { updateStartBtn(); saveSettings(); });
+        document.getElementById('apiKey').addEventListener('input', () => { validateKey(); updateStartBtn(); saveSettings(); });
         document.getElementById('aiType').addEventListener('change', saveSettings);
         document.getElementById('strategy').addEventListener('change', saveSettings);
         document.getElementById('ntfyChannel').addEventListener('input', saveSettings);
