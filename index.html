@@ -19,7 +19,7 @@
         
         .header {
             text-align: center;
-            padding: 18px 0;
+            padding: 20px 0;
             margin-bottom: 15px;
         }
         
@@ -41,8 +41,8 @@
             gap: 8px;
             padding: 10px;
             background: rgba(0, 212, 255, 0.1);
-            border-radius: 8px;
-            margin-bottom: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
             border: 1px solid rgba(0, 212, 255, 0.2);
         }
         
@@ -59,41 +59,59 @@
         .status-text { color: #00ff88; font-weight: 500; font-size: 0.8rem; }
         
         /* Accordion Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
         .card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 10px;
-            margin-bottom: 8px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
             overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .card.active {
+            grid-column: span 2;
+            background: rgba(255,255,255,0.05);
+            border-color: #00d4ff;
         }
         
         .card-header {
-            padding: 12px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 15px;
             cursor: pointer;
-            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.3s;
         }
         
         .card-header:hover {
-            background: rgba(255,255,255,0.03);
+            background: rgba(255,255,255,0.05);
         }
         
         .card-title {
-            font-size: 0.9rem;
-            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .card-title-icon {
+            font-size: 1.1rem;
         }
         
         .card-value {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #00d4ff;
-            background: rgba(0, 212, 255, 0.1);
-            padding: 3px 10px;
-            border-radius: 12px;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         
         .card-arrow {
@@ -102,28 +120,23 @@
             font-size: 0.8rem;
         }
         
-        .card.open .card-arrow {
+        .card.active .card-arrow {
             transform: rotate(180deg);
         }
         
         .card-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            background: rgba(0,0,0,0.2);
+            display: none;
+            padding: 0 15px 15px;
         }
         
-        .card.open .card-content {
-            max-height: 400px;
-        }
-        
-        .card-inner {
-            padding: 12px 15px;
+        .card.active .card-content {
+            display: block;
         }
         
         /* Form Elements */
-        .form-group { margin-bottom: 12px; }
-        .form-group:last-child { margin-bottom: 0; }
+        .form-group {
+            margin-bottom: 12px;
+        }
         
         .form-label {
             display: block;
@@ -135,8 +148,8 @@
         .form-select, .form-input {
             width: 100%;
             padding: 10px 12px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.15);
             border-radius: 8px;
             color: #fff;
             font-size: 0.85rem;
@@ -146,7 +159,7 @@
         .form-select {
             cursor: pointer;
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%23666' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23888' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: left 12px center;
         }
@@ -154,6 +167,10 @@
         .form-select:focus, .form-input:focus {
             outline: none;
             border-color: #00d4ff;
+        }
+        
+        .form-select option {
+            background: #1a1a2e;
         }
         
         .form-hint {
@@ -180,84 +197,69 @@
         
         /* Multi Select */
         .pairs-list {
-            max-height: 180px;
+            max-height: 200px;
             overflow-y: auto;
-        }
-        
-        .pair-group-title {
-            font-size: 0.7rem;
-            color: #00d4ff;
-            padding: 8px 0 4px 0;
-            font-weight: 600;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 5px;
         }
         
         .pair-item {
+            padding: 8px 10px;
+            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 10px;
-            margin: 2px 0;
-            background: rgba(255,255,255,0.02);
             border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.8rem;
             transition: background 0.2s;
+            font-size: 0.8rem;
         }
         
         .pair-item:hover {
-            background: rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.1);
         }
         
         .pair-item.selected {
-            background: rgba(0, 212, 255, 0.12);
-            border: 1px solid rgba(0, 212, 255, 0.3);
+            background: rgba(0, 212, 255, 0.15);
         }
         
-        .pair-check {
+        .pair-checkbox {
             width: 16px;
             height: 16px;
-            border: 2px solid rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
             border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 10px;
-            color: transparent;
+            flex-shrink: 0;
         }
         
-        .pair-item.selected .pair-check {
+        .pair-item.selected .pair-checkbox {
             background: #00d4ff;
             border-color: #00d4ff;
             color: #000;
         }
         
-        /* Selected Tags */
-        .selected-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 8px;
-        }
-        
-        .tag {
-            background: rgba(0, 212, 255, 0.15);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            padding: 3px 8px;
-            border-radius: 12px;
+        .pairs-category {
+            padding: 5px 10px;
             font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            color: #00d4ff;
+            font-weight: 600;
+            margin-top: 5px;
         }
         
-        .tag-remove {
-            cursor: pointer;
-            opacity: 0.6;
+        /* Selected Tags */
+        .selected-count {
+            background: #00d4ff;
+            color: #000;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
         }
         
-        .tag-remove:hover { opacity: 1; }
-        
-        /* Button */
+        /* Start Button */
         .start-btn {
             width: 100%;
             padding: 14px;
@@ -269,11 +271,11 @@
             transition: all 0.3s;
             background: linear-gradient(135deg, #00d4ff, #00ff88);
             color: #000;
-            margin: 12px 0;
+            margin-bottom: 15px;
         }
         
         .start-btn:disabled {
-            background: #222;
+            background: #333;
             color: #555;
             cursor: not-allowed;
         }
@@ -286,26 +288,20 @@
         .signal-card {
             display: none;
             padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            animation: slideIn 0.4s ease;
-        }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+            border-radius: 12px;
+            margin-bottom: 15px;
         }
         
         .signal-card.buy {
             display: block;
-            background: linear-gradient(135deg, rgba(0, 255, 136, 0.12), rgba(0, 255, 136, 0.03));
-            border: 1px solid #00ff88;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 255, 136, 0.05));
+            border: 2px solid #00ff88;
         }
         
         .signal-card.sell {
             display: block;
-            background: linear-gradient(135deg, rgba(255, 68, 68, 0.12), rgba(255, 68, 68, 0.03));
-            border: 1px solid #ff4444;
+            background: linear-gradient(135deg, rgba(255, 68, 68, 0.15), rgba(255, 68, 68, 0.05));
+            border: 2px solid #ff4444;
         }
         
         .signal-header {
@@ -330,8 +326,8 @@
             text-align: center;
         }
         
-        .signal-label { font-size: 0.6rem; color: #666; }
-        .signal-value { font-size: 0.85rem; font-weight: 700; margin-top: 2px; }
+        .signal-label { font-size: 0.6rem; color: #888; margin-bottom: 2px; }
+        .signal-value { font-size: 0.8rem; font-weight: 700; }
         
         /* Waiting */
         .waiting {
@@ -347,124 +343,117 @@
         
         /* Footer */
         .footer { text-align: center; padding: 10px; color: #333; font-size: 0.65rem; }
-        
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Header -->
         <div class="header">
             <div class="logo">Aziz Forex</div>
             <div class="subtitle">مراقب السوق بالذكاء الاصطناعي</div>
         </div>
         
+        <!-- Status -->
         <div class="status-bar">
-            <div class="status-dot"></div>
+            <div class="status-dot" id="statusDot"></div>
             <span class="status-text" id="statusText">جاهز للمراقبة</span>
         </div>
         
-        <!-- AI Card -->
-        <div class="card" id="cardAI">
-            <div class="card-header" onclick="toggleCard('cardAI')">
-                <span class="card-title">🤖 الذكاء</span>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span class="card-value" id="aiValue">GPT-4</span>
+        <!-- Cards Grid -->
+        <div class="cards-grid">
+            <!-- AI Card -->
+            <div class="card" id="aiCard">
+                <div class="card-header" onclick="toggleCard('aiCard')">
+                    <div class="card-title">
+                        <span class="card-title-icon">🤖</span>
+                        <span>الذكاء</span>
+                    </div>
+                    <div class="card-value" id="aiValue">GPT-4</div>
                     <span class="card-arrow">▼</span>
                 </div>
-            </div>
-            <div class="card-content">
-                <div class="card-inner">
+                <div class="card-content">
                     <div class="form-group">
                         <label class="form-label">نوع الذكاء</label>
-                        <select class="form-select" id="aiType" onchange="updateCardValue('aiValue', this.options[this.selectedIndex].text)">
+                        <select class="form-select" id="aiType" onchange="updateCardValue('aiCard', 'aiValue', this.options[this.selectedIndex].text)">
                             <option value="openai">OpenAI (GPT-4)</option>
-                            <option value="anthropic">Anthropic (Claude)</option>
-                            <option value="google">Google (Gemini)</option>
+                            <option value="anthropic">Claude</option>
+                            <option value="google">Gemini</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="form-label">مفتاح API</label>
                         <input type="password" class="form-input" id="apiKey" placeholder="sk-...">
-                        <div class="form-hint">🔒 يُحفظ في جهازك فقط</div>
+                        <div class="form-hint">🔒 يُحفظ محلياً فقط</div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- Pairs Card -->
-        <div class="card" id="cardPairs">
-            <div class="card-header" onclick="toggleCard('cardPairs')">
-                <span class="card-title">💱 الأزواج</span>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span class="card-value" id="pairsValue">0 محدد</span>
+            
+            <!-- Pairs Card -->
+            <div class="card" id="pairsCard">
+                <div class="card-header" onclick="toggleCard('pairsCard')">
+                    <div class="card-title">
+                        <span class="card-title-icon">💱</span>
+                        <span>الأزواج</span>
+                    </div>
+                    <span class="selected-count" id="pairsCount">0</span>
                     <span class="card-arrow">▼</span>
                 </div>
-            </div>
-            <div class="card-content">
-                <div class="card-inner">
+                <div class="card-content">
                     <div class="pairs-list" id="pairsList"></div>
-                    <div class="selected-tags" id="selectedTags"></div>
                 </div>
             </div>
-        </div>
-        
-        <!-- Strategy Card -->
-        <div class="card" id="cardStrategy">
-            <div class="card-header" onclick="toggleCard('cardStrategy')">
-                <span class="card-title">📈 الاستراتيجية</span>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span class="card-value" id="strategyValue">RSI</span>
+            
+            <!-- Strategy Card -->
+            <div class="card" id="strategyCard">
+                <div class="card-header" onclick="toggleCard('strategyCard')">
+                    <div class="card-title">
+                        <span class="card-title-icon">📈</span>
+                        <span>الاستراتيجية</span>
+                    </div>
+                    <div class="card-value" id="strategyValue">RSI</div>
                     <span class="card-arrow">▼</span>
                 </div>
-            </div>
-            <div class="card-content">
-                <div class="card-inner">
+                <div class="card-content">
                     <div class="form-group">
-                        <select class="form-select" id="strategy" onchange="updateCardValue('strategyValue', this.options[this.selectedIndex].text.split(' ')[0])">
-                            <option value="rsi">RSI - ذروة البيع/الشراء</option>
-                            <option value="trend">Trend - تتبع الاتجاه</option>
-                            <option value="breakout">Breakout - كسر المستويات</option>
-                            <option value="scalping">Scalping - المضاربة السريعة</option>
-                            <option value="swing">Swing - التداول المتأرجح</option>
-                            <option value="price_action">Price Action - حركة السعر</option>
-                            <option value="smart_money">Smart Money - السيولة الذكية</option>
-                            <option value="supply_demand">Supply/Demand - العرض والطلب</option>
+                        <select class="form-select" id="strategy" onchange="updateCardValue('strategyCard', 'strategyValue', this.options[this.selectedIndex].text.split(' ')[0])">
+                            <option value="rsi">RSI (ذروة البيع/الشراء)</option>
+                            <option value="trend">Trend (تتبع الاتجاه)</option>
+                            <option value="breakout">Breakout (كسر المستويات)</option>
+                            <option value="scalping">Scalping (مضاربة سريعة)</option>
+                            <option value="swing">Swing (تداول متأرجح)</option>
+                            <option value="price_action">Price Action (حركة السعر)</option>
+                            <option value="smart_money">Smart Money (السيولة الذكية)</option>
+                            <option value="supply_demand">Supply/Demand (عرض وطلب)</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="useChart" checked>
-                            تحليل الشارت بصرياً (Vision)
-                        </label>
-                        <div class="form-hint">الذكاء يرى صورة الشارت الحقيقية</div>
-                    </div>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="useChart" checked>
+                        تحليل الشارت بصرياً
+                    </label>
                 </div>
             </div>
-        </div>
-        
-        <!-- Notifications Card -->
-        <div class="card" id="cardNotify">
-            <div class="card-header" onclick="toggleCard('cardNotify')">
-                <span class="card-title">🔔 الإشعارات</span>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span class="card-value" id="notifyValue">غير مفعل</span>
+            
+            <!-- Notifications Card -->
+            <div class="card" id="notifyCard">
+                <div class="card-header" onclick="toggleCard('notifyCard')">
+                    <div class="card-title">
+                        <span class="card-title-icon">🔔</span>
+                        <span>الإشعارات</span>
+                    </div>
+                    <div class="card-value" id="notifyValue">--</div>
                     <span class="card-arrow">▼</span>
                 </div>
-            </div>
-            <div class="card-content">
-                <div class="card-inner">
+                <div class="card-content">
                     <div class="form-group">
                         <label class="form-label">قناة Ntfy</label>
-                        <input type="text" class="form-input" id="ntfyChannel" placeholder="my-alerts" oninput="updateNotifyValue()">
-                        <div class="form-hint">حمّل تطبيق Ntfy واشترك في القناة</div>
+                        <input type="text" class="form-input" id="ntfyChannel" placeholder="my-alerts" oninput="document.getElementById('notifyValue').textContent = this.value || '--'">
+                        <div class="form-hint">حمّل Ntfy واشترك بنفس الاسم</div>
                     </div>
                 </div>
             </div>
         </div>
         
+        <!-- Start Button -->
         <button class="start-btn" id="startBtn" onclick="toggleMonitoring()" disabled>ابدأ المراقبة</button>
         
         <!-- Signal -->
@@ -479,20 +468,21 @@
                     <div class="signal-value" id="entryPrice">--</div>
                 </div>
                 <div class="signal-item">
-                    <div class="signal-label">وقف الخسارة</div>
+                    <div class="signal-label">وقف</div>
                     <div class="signal-value" id="slPrice">--</div>
                 </div>
                 <div class="signal-item">
-                    <div class="signal-label">أخذ الربح</div>
+                    <div class="signal-label">هدف</div>
                     <div class="signal-value" id="tpPrice">--</div>
                 </div>
                 <div class="signal-item">
-                    <div class="signal-label">اللوت</div>
+                    <div class="signal-label">لوت</div>
                     <div class="signal-value" id="lotSize">--</div>
                 </div>
             </div>
         </div>
         
+        <!-- Waiting -->
         <div class="waiting" id="waiting">
             <div class="waiting-icon">⏳</div>
             <div>يراقب السوق...</div>
@@ -502,8 +492,9 @@
     </div>
     
     <script>
-        const allPairs = {
-            'العملات الرقمية 💰': [
+        // Pairs Data
+        const pairsData = {
+            '💰 كريبتو': [
                 { symbol: 'BTC-USD', name: 'BTC/USD', label: 'بيتكوين' },
                 { symbol: 'ETH-USD', name: 'ETH/USD', label: 'إيثريوم' },
                 { symbol: 'BNB-USD', name: 'BNB/USD', label: 'باينانس' },
@@ -516,30 +507,30 @@
                 { symbol: 'MATIC-USD', name: 'MATIC/USD', label: 'بوليجون' },
                 { symbol: 'LINK-USD', name: 'LINK/USD', label: 'تشين لينك' },
             ],
-            'العملات 💵': [
+            '💵 فوركس': [
                 { symbol: 'EURUSD=X', name: 'EUR/USD', label: 'يورو/دولار' },
                 { symbol: 'GBPUSD=X', name: 'GBP/USD', label: 'باوند/دولار' },
                 { symbol: 'USDJPY=X', name: 'USD/JPY', label: 'دولار/ين' },
-                { symbol: 'AUDUSD=X', name: 'AUD/USD', label: 'استرالي/دولار' },
+                { symbol: 'AUDUSD=X', name: 'AUD/USD', label: 'استرالي' },
                 { symbol: 'USDCAD=X', name: 'USD/CAD', label: 'دولار/كندي' },
-                { symbol: 'NZDUSD=X', name: 'NZD/USD', label: 'نيوزلندي/دولار' },
+                { symbol: 'NZDUSD=X', name: 'NZD/USD', label: 'نيوزلندي' },
                 { symbol: 'USDCHF=X', name: 'USD/CHF', label: 'دولار/فرنك' },
                 { symbol: 'EURGBP=X', name: 'EUR/GBP', label: 'يورو/باوند' },
                 { symbol: 'EURJPY=X', name: 'EUR/JPY', label: 'يورو/ين' },
                 { symbol: 'GBPJPY=X', name: 'GBP/JPY', label: 'باوند/ين' },
             ],
-            'المعادن 🥇': [
+            '🥇 معادن': [
                 { symbol: 'GC=F', name: 'XAU/USD', label: 'الذهب' },
                 { symbol: 'SI=F', name: 'XAG/USD', label: 'الفضة' },
                 { symbol: 'PL=F', name: 'XPT/USD', label: 'البلاتين' },
                 { symbol: 'HG=F', name: 'النحاس', label: 'النحاس' },
             ],
-            'المؤشرات 📊': [
+            '📊 مؤشرات': [
                 { symbol: '^GSPC', name: 'S&P 500', label: 'إس آند بي' },
                 { symbol: '^DJI', name: 'Dow Jones', label: 'داو جونز' },
                 { symbol: '^IXIC', name: 'NASDAQ', label: 'ناسداك' },
                 { symbol: '^GDAXI', name: 'DAX', label: 'داكس' },
-                { symbol: '^FTSE', name: 'FTSE 100', label: 'فوتسي' },
+                { symbol: '^FTSE', name: 'FTSE', label: 'فوتسي' },
             ]
         };
         
@@ -547,93 +538,83 @@
         let isMonitoring = false;
         let monitorInterval = null;
         
-        function toggleCard(id) {
-            document.getElementById(id).classList.toggle('open');
+        // Toggle Card
+        function toggleCard(cardId) {
+            const card = document.getElementById(cardId);
+            const wasActive = card.classList.contains('active');
+            
+            // Close all cards
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            
+            // Open clicked card if it wasn't active
+            if (!wasActive) {
+                card.classList.add('active');
+            }
         }
         
-        function updateCardValue(id, value) {
-            document.getElementById(id).textContent = value;
+        function updateCardValue(cardId, valueId, text) {
+            document.getElementById(valueId).textContent = text;
             saveSettings();
         }
         
-        function updateNotifyValue() {
-            const val = document.getElementById('ntfyChannel').value;
-            document.getElementById('notifyValue').textContent = val ? 'مفعل' : 'غير مفعل';
-            saveSettings();
-        }
-        
-        function renderPairs() {
+        // Build Pairs List
+        function buildPairsList() {
             const container = document.getElementById('pairsList');
             container.innerHTML = '';
             
-            for (const [group, pairs] of Object.entries(allPairs)) {
-                const title = document.createElement('div');
-                title.className = 'pair-group-title';
-                title.textContent = group;
-                container.appendChild(title);
+            for (const [category, pairs] of Object.entries(pairsData)) {
+                const catDiv = document.createElement('div');
+                catDiv.className = 'pairs-category';
+                catDiv.textContent = category;
+                container.appendChild(catDiv);
                 
                 pairs.forEach(pair => {
                     const item = document.createElement('div');
                     item.className = 'pair-item';
                     item.dataset.symbol = pair.symbol;
-                    item.innerHTML = `<div class="pair-check">✓</div><span>${pair.name} - ${pair.label}</span>`;
+                    item.innerHTML = `<div class="pair-checkbox">✓</div><span>${pair.name}</span>`;
                     item.onclick = () => togglePair(pair, item);
                     container.appendChild(item);
                 });
             }
         }
         
-        function togglePair(pair, item) {
-            if (item.classList.contains('selected')) {
-                item.classList.remove('selected');
+        function togglePair(pair, element) {
+            if (element.classList.contains('selected')) {
+                element.classList.remove('selected');
                 selectedPairs = selectedPairs.filter(p => p.symbol !== pair.symbol);
             } else {
-                item.classList.add('selected');
+                element.classList.add('selected');
                 selectedPairs.push(pair);
             }
-            updatePairsUI();
-            saveSettings();
-        }
-        
-        function updatePairsUI() {
-            document.getElementById('pairsValue').textContent = selectedPairs.length + ' محدد';
             
-            const tags = document.getElementById('selectedTags');
-            tags.innerHTML = selectedPairs.map(p => `
-                <div class="tag">${p.name}<span class="tag-remove" onclick="removePair('${p.symbol}')">✕</span></div>
-            `).join('');
-            
+            document.getElementById('pairsCount').textContent = selectedPairs.length;
             updateStartButton();
-        }
-        
-        function removePair(symbol) {
-            const item = document.querySelector(`.pair-item[data-symbol="${symbol}"]`);
-            if (item) item.classList.remove('selected');
-            selectedPairs = selectedPairs.filter(p => p.symbol !== symbol);
-            updatePairsUI();
             saveSettings();
         }
         
         function updateStartButton() {
-            document.getElementById('startBtn').disabled = !document.getElementById('apiKey').value || selectedPairs.length === 0;
+            const apiKey = document.getElementById('apiKey').value;
+            document.getElementById('startBtn').disabled = !apiKey || selectedPairs.length === 0;
         }
         
+        // Save/Load Settings
         function saveSettings() {
-            localStorage.setItem('aziz_aiType', document.getElementById('aiType').value);
-            localStorage.setItem('aziz_apiKey', document.getElementById('apiKey').value);
-            localStorage.setItem('aziz_strategy', document.getElementById('strategy').value);
-            localStorage.setItem('aziz_ntfy', document.getElementById('ntfyChannel').value);
-            localStorage.setItem('aziz_useChart', document.getElementById('useChart').checked);
-            localStorage.setItem('aziz_pairs', JSON.stringify(selectedPairs));
+            localStorage.setItem('aiType', document.getElementById('aiType').value);
+            localStorage.setItem('apiKey', document.getElementById('apiKey').value);
+            localStorage.setItem('strategy', document.getElementById('strategy').value);
+            localStorage.setItem('ntfyChannel', document.getElementById('ntfyChannel').value);
+            localStorage.setItem('useChart', document.getElementById('useChart').checked);
+            localStorage.setItem('selectedPairs', JSON.stringify(selectedPairs));
         }
         
         function loadSettings() {
-            const aiType = localStorage.getItem('aziz_aiType') || 'openai';
-            const apiKey = localStorage.getItem('aziz_apiKey') || '';
-            const strategy = localStorage.getItem('aziz_strategy') || 'rsi';
-            const ntfy = localStorage.getItem('aziz_ntfy') || '';
-            const useChart = localStorage.getItem('aziz_useChart') !== 'false';
-            const pairs = JSON.parse(localStorage.getItem('aziz_pairs') || '[]');
+            const aiType = localStorage.getItem('aiType') || 'openai';
+            const apiKey = localStorage.getItem('apiKey') || '';
+            const strategy = localStorage.getItem('strategy') || 'rsi';
+            const ntfy = localStorage.getItem('ntfyChannel') || '';
+            const useChart = localStorage.getItem('useChart') !== 'false';
+            const savedPairs = JSON.parse(localStorage.getItem('selectedPairs') || '[]');
             
             document.getElementById('aiType').value = aiType;
             document.getElementById('apiKey').value = apiKey;
@@ -641,31 +622,44 @@
             document.getElementById('ntfyChannel').value = ntfy;
             document.getElementById('useChart').checked = useChart;
             
-            updateCardValue('aiValue', document.getElementById('aiType').options[document.getElementById('aiType').selectedIndex].text);
-            updateCardValue('strategyValue', document.getElementById('strategy').options[document.getElementById('strategy').selectedIndex].text.split(' ')[0]);
-            updateNotifyValue();
+            document.getElementById('aiValue').textContent = document.getElementById('aiType').options[document.getElementById('aiType').selectedIndex].text.split(' ')[0];
+            document.getElementById('strategyValue').textContent = document.getElementById('strategy').options[document.getElementById('strategy').selectedIndex].text.split(' ')[0];
+            document.getElementById('notifyValue').textContent = ntfy || '--';
             
-            selectedPairs = pairs;
-            pairs.forEach(p => {
-                const item = document.querySelector(`.pair-item[data-symbol="${p.symbol}"]`);
-                if (item) item.classList.add('selected');
+            // Restore selected pairs
+            savedPairs.forEach(pair => {
+                const item = document.querySelector(`.pair-item[data-symbol="${pair.symbol}"]`);
+                if (item) {
+                    item.classList.add('selected');
+                    selectedPairs.push(pair);
+                }
             });
-            updatePairsUI();
+            
+            document.getElementById('pairsCount').textContent = selectedPairs.length;
+            updateStartButton();
         }
         
+        // Event Listeners
         document.getElementById('apiKey').addEventListener('input', () => { updateStartButton(); saveSettings(); });
+        document.getElementById('aiType').addEventListener('change', saveSettings);
+        document.getElementById('strategy').addEventListener('change', saveSettings);
+        document.getElementById('ntfyChannel').addEventListener('input', saveSettings);
+        document.getElementById('useChart').addEventListener('change', saveSettings);
         
+        // Monitoring
         function toggleMonitoring() {
             if (isMonitoring) stopMonitoring();
             else startMonitoring();
         }
         
         function startMonitoring() {
-            if (selectedPairs.length === 0) return;
+            if (selectedPairs.length === 0 || !document.getElementById('apiKey').value) return;
             
             isMonitoring = true;
-            document.getElementById('startBtn').textContent = 'إيقاف المراقبة';
-            document.getElementById('startBtn').classList.add('stop-btn');
+            const btn = document.getElementById('startBtn');
+            btn.textContent = 'إيقاف المراقبة';
+            btn.classList.add('stop-btn');
+            
             document.getElementById('statusText').textContent = `يراقب ${selectedPairs.length} زوج`;
             document.getElementById('waiting').classList.add('active');
             document.getElementById('signalCard').className = 'signal-card';
@@ -676,10 +670,14 @@
         
         function stopMonitoring() {
             isMonitoring = false;
-            document.getElementById('startBtn').textContent = 'ابدأ المراقبة';
-            document.getElementById('startBtn').classList.remove('stop-btn');
+            const btn = document.getElementById('startBtn');
+            btn.textContent = 'ابدأ المراقبة';
+            btn.classList.remove('stop-btn');
+            
             document.getElementById('statusText').textContent = 'جاهز للمراقبة';
             document.getElementById('waiting').classList.remove('active');
+            document.getElementById('signalCard').className = 'signal-card';
+            
             if (monitorInterval) clearInterval(monitorInterval);
         }
         
@@ -692,12 +690,11 @@
             const aiType = document.getElementById('aiType').value;
             const strategy = document.getElementById('strategy').value;
             const ntfy = document.getElementById('ntfyChannel').value;
-            const useChart = document.getElementById('useChart').checked;
+            const useChart = document.getElementById('useChart').checked ? 'true' : 'false';
             
             for (const pair of selectedPairs) {
                 try {
-                    const url = `/api/analyze?symbol=${encodeURIComponent(pair.symbol)}&name=${encodeURIComponent(pair.label)}&apiKey=${encodeURIComponent(apiKey)}&ai=${aiType}&strategy=${strategy}&ntfy=${encodeURIComponent(ntfy)}&useChart=${useChart}`;
-                    const response = await fetch(url);
+                    const response = await fetch(`/api/analyze?symbol=${encodeURIComponent(pair.symbol)}&name=${encodeURIComponent(pair.label)}&apiKey=${encodeURIComponent(apiKey)}&ai=${aiType}&strategy=${strategy}&ntfy=${encodeURIComponent(ntfy)}&useChart=${useChart}`);
                     const data = await response.json();
                     
                     if (data.signal && !data.signal.includes('⏳')) {
@@ -705,8 +702,8 @@
                     }
                     
                     await new Promise(r => setTimeout(r, 2000));
-                } catch (e) {
-                    console.error(e);
+                } catch (error) {
+                    console.error('Error:', error);
                 }
             }
             
@@ -715,7 +712,9 @@
         
         function showSignal(data, pair) {
             const isBuy = data.signal.includes('BUY') || data.signal.includes('شراء');
-            document.getElementById('signalCard').className = `signal-card ${isBuy ? 'buy' : 'sell'}`;
+            const card = document.getElementById('signalCard');
+            
+            card.className = `signal-card ${isBuy ? 'buy' : 'sell'}`;
             document.getElementById('signalType').textContent = isBuy ? '🟢 شراء' : '🔴 بيع';
             document.getElementById('signalType').className = `signal-type ${isBuy ? 'buy' : 'sell'}`;
             document.getElementById('signalPair').textContent = pair.label;
@@ -725,7 +724,8 @@
             document.getElementById('lotSize').textContent = data.lot || '0.01';
         }
         
-        renderPairs();
+        // Init
+        buildPairsList();
         loadSettings();
     </script>
 </body>
